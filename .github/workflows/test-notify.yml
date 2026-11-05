@@ -15,5 +15,6 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh issue create -R "${{ github.repository }}" \
-            --title "[시험] 알림 메일 확인용 (봇)" \
-            --body "현질효율판 자동 알림 시험이에요. 이 메일을 받으셨다면 '새 상품 확률표 필요' 알림도 같은 곳으로 와요."
+            --title "[시험] 알림 메일 확인용 (봇, 담당자 지정)" \
+            --assignee "${{ github.repository_owner }}" \
+            --body "@${{ github.repository_owner }} 현질효율판 자동 알림 시험이에요. 이 메일을 받으셨다면 '새 상품 확률표 필요' 알림도 같은 곳으로 와요."

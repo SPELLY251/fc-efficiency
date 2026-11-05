@@ -32,7 +32,14 @@ def main():
             if all(n in issue.get("body", "") for n in names):
                 print(f"이미 열린 알림 #{issue['number']} 이 있어 새로 만들지 않음")
                 return
-    r = gh("issue", "create", "--title", f"{TITLE}: {len(missing)}개", "--body", body)
+    # 저장소 주인을 담당자로 지정하고 @언급 → '나와 직접 관련된 알림'이라 메일이 확실히 간다
+    owner = os.environ.get("GITHUB_REPOSITORY_OWNER", "")
+    if owner:
+        body = f"@{owner} " + body
+    args = ["issue", "create", "--title", f"{TITLE}: {len(missing)}개", "--body", body]
+    if owner:
+        args += ["--assignee", owner]
+    r = gh(*args)
     print(r.stdout or r.stderr)
 
 
