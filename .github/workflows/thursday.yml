@@ -1,0 +1,37 @@
+# 목요일 정기점검이 끝나면 바로 한 번 더 갱신한다 (매일 01:05 갱신과 합쳐 주 8회).
+# 점검 종료 5분 전에 공지를 다시 확인하고, 연장되면 연장된 시각까지 기다린다.
+name: 목요일 점검 후 갱신
+
+on:
+  schedule:
+    - cron: "30 20 * * 3"   # 한국 목요일 05:30 시작 (최대 5시간 40분 대기)
+    - cron: "0 2 * * 4"     # 한국 목요일 11:00 — 점검이 길어진 경우 이어서 감시
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  issues: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    outputs:
+      run: ${{ steps.watch.outputs.run }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: 점검 종료 기다리기
+        id: watch
+        run: python scraper/maintenance_watch.py
+
+  update:
+    needs: watch
+    if: needs.watch.outputs.run == 'true'
+    uses: ./.github/workflows/update.yml
+    secrets: inherit

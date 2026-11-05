@@ -1,0 +1,27 @@
+/* 안내 페이지(소개·계산 방법·개인정보처리방침) 공통 스타일 — 메인과 같은 검정 + 초록 */
+:root {
+  color-scheme: dark;
+  --page: #000; --surface: #111311; --ink: #f2f4f2; --ink-2: #b9c0b9; --muted: #8a918a;
+  --grid: #262a26; --accent: #07f468;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--page); color: var(--ink); line-height: 1.75;
+  font-family: system-ui, -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+}
+.wrap { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+.top a { color: var(--ink); text-decoration: none; font-weight: 800; font-size: 20px; }
+.top a span { color: var(--accent); }
+h1 { font-size: 26px; margin: 28px 0 8px; }
+h2 { font-size: 19px; margin: 32px 0 8px; padding-left: 10px; border-left: 4px solid var(--accent); }
+h3 { font-size: 16px; margin: 20px 0 4px; }
+p, li { color: var(--ink-2); }
+b, strong { color: var(--ink); }
+a { color: var(--accent); }
+.box { background: var(--surface); border: 1px solid #fff; border-radius: 14px; padding: 6px 18px 14px; margin-top: 16px; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { border-bottom: 1px solid var(--grid); padding: 6px 8px; text-align: left; }
+th { color: var(--ink); }
+code { background: var(--surface); padding: 1px 6px; border-radius: 6px; }
+.foot { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--grid); font-size: 13px; color: var(--muted); }
+.foot a { color: var(--ink-2); margin-right: 14px; }

@@ -1,0 +1,9 @@
+{
+  "_설명": "공개 설정. 값이 비어 있으면 해당 기능은 꺼진 상태로 사이트를 만든다.",
+  "site_url": "",
+  "contact_url": "",
+  "google_site_verification": "",
+  "naver_site_verification": "",
+  "ga_measurement_id": "",
+  "adsense_client": ""
+}

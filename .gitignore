@@ -1,0 +1,8 @@
+# 실행 중 생기는 임시 파일
+output/*.log
+output/dc_cache.json
+output/step1_result.json
+output/shop_products.json
+__pycache__/
+*.pyc
+.claude/

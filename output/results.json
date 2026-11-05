@@ -1,0 +1,2127 @@
+{
+ "updated_at": "2026-11-06T01:15+09:00",
+ "probability_fetched": "2026-11-06",
+ "discounts": {
+  "none": 0.0,
+  "top": 0.2,
+  "pc": 0.3,
+  "pc_top": 0.5
+ },
+ "products": [
+  {
+   "pid": 44732,
+   "name": "[10~11강 20%] 10~11강팩 or BP 패키지",
+   "price_fc": 9900,
+   "components": [
+    {
+     "name": "[10~11강 20%] 10~11강팩 or BP 상자",
+     "count": 1
+    },
+    {
+     "name": "[동일확률] 26UP Top Price 1435 (1~7강)",
+     "count": 3
+    }
+   ],
+   "period": "2026.10.29(목) 08:00 ~ 11.26(목) 08:00",
+   "limit_text": "",
+   "limit": null,
+   "status": "ok",
+   "ev": {
+    "bp": 307840000.0,
+    "player": 219395302.64444798
+   },
+   "per_fc": {
+    "none": 44391.63450370392,
+    "top": 46164.52583820451,
+    "pc": 47050.9715054548,
+    "pc_top": 48823.86283995539
+   },
+   "parts": [
+    {
+     "name": "[10~11강 20%] 10~11강팩 or BP 상자",
+     "count": 1,
+     "bp": 307840000.0,
+     "player": 196363968.7768522,
+     "breakdown": [
+      {
+       "name": "26UP Top Price 95 (11강, 114+)",
+       "prob": 0.019924,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 1371552563.7037995
+      },
+      {
+       "name": "UC Top Price 110 (11강, 117+)",
+       "prob": 0.0051719999999999995,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 944210298.9080772
+      },
+      {
+       "name": "SPT, 26FSL 포함 Top Price 630 (11강, 114+)",
+       "prob": 0.1,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 1012138963.4076139
+      },
+      {
+       "name": "UC Top Price 60 (10강, 117+)",
+       "prob": 0.024058000000000003,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 735857493.4379516
+      },
+      {
+       "name": "26UP 포함 Top Price 270 (10강, 114+)",
+       "prob": 0.050846,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 889677534.3935307
+      },
+      {
+       "name": "행운의 BP 카드 (400만~800만)",
+       "prob": 0.8,
+       "amount": 80,
+       "bp": 4810000.0,
+       "player": 0.0
+      }
+     ]
+    },
+    {
+     "name": "[동일확률] 26UP Top Price 1435 (1~7강)",
+     "count": 3,
+     "bp": 0.0,
+     "player": 7677111.289198599,
+     "breakdown": null
+    }
+   ]
+  },
+  {
+   "pid": 44733,
+   "name": "26UP UPGRADE 패키지",
+   "price_fc": 7500,
+   "components": [
+    {
+     "name": "26UP UPGRADE 상자",
+     "count": 1
+    },
+    {
+     "name": "[동일확률] 26UP Top Price 1435 (1~7강)",
+     "count": 3
+    },
+    {
+     "name": "26PL Top Price 5500 (1~11강)",
+     "count": 2
+    }
+   ],
+   "period": "2026.10.29(목) 08:00 ~ 11.26(목) 08:00",
+   "limit_text": "",
+   "limit": null,
+   "status": "ok",
+   "ev": {
+    "bp": 115000000.0,
+    "player": 360668573.9237447
+   },
+   "per_fc": {
+    "none": 44186.8192472329,
+    "top": 48033.95070241952,
+    "pc": 49957.51643001282,
+    "pc_top": 53804.64788519943
+   },
+   "parts": [
+    {
+     "name": "26UP UPGRADE 상자",
+     "count": 1,
+     "bp": 115000000.0,
+     "player": 337401744.3065541,
+     "breakdown": [
+      {
+       "name": "[TRIPLE UP] 26UP Top Price 116 (11강, 114+)",
+       "prob": 0.01024,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 1202902946.3288264
+      },
+      {
+       "name": "[TRIPLE UP] UC Top Price 111 (11강, 117+)",
+       "prob": 0.00392,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 845290159.0858371
+      },
+      {
+       "name": "[DOUBLE UP] SPT, 26FSL 포함 Top Price 880 (11강, 114+)",
+       "prob": 0.07675799999999999,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 721440472.0491587
+      },
+      {
+       "name": "[DOUBLE UP] 26UP 포함 Top Price 490 (10강, 110+)",
+       "prob": 0.08150299999999999,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 536222498.2623187
+      },
+      {
+       "name": "[DOUBLE UP] 26UP 포함 Top Price 125 (9강, 110+)",
+       "prob": 0.091,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 666501794.3047289
+      },
+      {
+       "name": "[DOUBLE UP] 26UP 포함 Top Price 160 (8~9강, 110+)",
+       "prob": 0.160379,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 704781238.9304781
+      },
+      {
+       "name": "[DOUBLE UP] 26UP 포함 Top Price 80 (8강, 110+)",
+       "prob": 0.0762,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 643131720.248634
+      },
+      {
+       "name": "[UP] BP 카드 2.3억",
+       "prob": 0.5,
+       "amount": 1,
+       "bp": 230000000.0,
+       "player": 0.0
+      }
+     ]
+    },
+    {
+     "name": "[동일확률] 26UP Top Price 1435 (1~7강)",
+     "count": 3,
+     "bp": 0.0,
+     "player": 7677111.289198599,
+     "breakdown": null
+    },
+    {
+     "name": "26PL Top Price 5500 (1~11강)",
+     "count": 2,
+     "bp": 0.0,
+     "player": 117747.87479740134,
+     "breakdown": null
+    }
+   ]
+  },
+  {
+   "pid": 44730,
+   "name": "[확정 에디션] [26UP 11강 기회] 10~11강 확정 패키지",
+   "price_fc": 14900,
+   "components": [
+    {
+     "name": "[26UP 11강 기회] 10~11강 확정 상자",
+     "count": 1
+    },
+    {
+     "name": "[동일확률] 26UP Top Price 1435 (1~7강)",
+     "count": 3
+    }
+   ],
+   "period": "2026.10.29(목) 08:00 ~ 11.26(목) 08:00",
+   "limit_text": "구매제한 계정 3회",
+   "limit": 3,
+   "status": "ok",
+   "ev": {
+    "bp": 0.0,
+    "player": 885211655.3251249
+   },
+   "per_fc": {
+    "none": 35646.10692584395,
+    "top": 40398.92118262314,
+    "pc": 42775.328311012745,
+    "pc_top": 47528.14256779194
+   },
+   "parts": [
+    {
+     "name": "[26UP 11강 기회] 10~11강 확정 상자",
+     "count": 1,
+     "bp": 0.0,
+     "player": 862180321.4575291,
+     "breakdown": [
+      {
+       "name": "26UP Top Price 90 (11강, 115+)",
+       "prob": 0.020354999999999998,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 1338858773.902869
+      },
+      {
+       "name": "UC Top Price 106 (11강, 118+)",
+       "prob": 0.007788000000000001,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 1004393014.5653884
+      },
+      {
+       "name": "SPT, 26FSL 포함 Top Price 100 (11강)",
+       "prob": 0.03,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 1092232543.8635652
+      },
+      {
+       "name": "WG 포함 Top Price 460 (11강, 115+)",
+       "prob": 0.120505,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 1040987890.6764784
+      },
+      {
+       "name": "26UP, UC 포함 Top Price 310 (10강, 115+)",
+       "prob": 0.821352,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 814382160.4323419
+      }
+     ]
+    },
+    {
+     "name": "[동일확률] 26UP Top Price 1435 (1~7강)",
+     "count": 3,
+     "bp": 0.0,
+     "player": 7677111.289198599,
+     "breakdown": null
+    }
+   ]
+  },
+  {
+   "pid": 44734,
+   "name": "[박씨 2개 = 대박] 흥부네 26UP 하우스 X 3",
+   "price_fc": 5500,
+   "components": [
+    {
+     "name": "[박씨 2개 = 대박] 흥부네 26UP 하우스",
+     "count": 3
+    }
+   ],
+   "period": "2026.10.29(목) 08:00 ~ 11.26(목) 08:00",
+   "limit_text": "",
+   "limit": null,
+   "status": "ok",
+   "ev": {
+    "bp": 0.0,
+    "player": 322271126.73480344
+   },
+   "per_fc": {
+    "none": 35156.85018925128,
+    "top": 39844.43021448478,
+    "pc": 42188.220227101534,
+    "pc_top": 46875.80025233505
+   },
+   "parts": [
+    {
+     "name": "[박씨 2개 = 대박] 흥부네 26UP 하우스",
+     "count": 3,
+     "bp": 0.0,
+     "player": 107423708.91160116,
+     "breakdown": [
+      {
+       "name": "26UP Top Price 160 (11강)",
+       "prob": 0.0025009999999999998,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 482976289.50954443
+      },
+      {
+       "name": "UC, SPT, 26FSL Top Price 245 (11강)",
+       "prob": 0.009250000000000001,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 388767996.1886974
+      },
+      {
+       "name": "WG 포함 Top Price 1600 (11강, 104+)",
+       "prob": 0.010988,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 175183644.77012292
+      },
+      {
+       "name": "26UP Top Price 60 (10강)",
+       "prob": 0.005738,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 633722591.7739716
+      },
+      {
+       "name": "SPT, 26FSL 포함 Top Price 770 (10강, 108+)",
+       "prob": 0.0326,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 166187289.34246132
+      },
+      {
+       "name": "SPT, 26FSL 포함 Top Price 205 (9강, 108+)",
+       "prob": 0.06,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 157196021.52974138
+      },
+      {
+       "name": "SPT, 26FSL 포함 Top Price 105 (8강, 108+)",
+       "prob": 0.07,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 148048509.4438309
+      },
+      {
+       "name": "26UP Top Price 110 (8~9강)",
+       "prob": 0.011000000000000001,
+       "amount": 2,
+       "bp": 0.0,
+       "player": 459605587.463914
+      },
+      {
+       "name": "SPT, 26FSL 포함 Top Price 120 (1~7강)",
+       "prob": 0.19792300000000002,
+       "amount": 3,
+       "bp": 0.0,
+       "player": 26433756.60593593
+      },
+      {
+       "name": "제비가 물어다준 박씨 (박씨 2개=대박)(~26.12.03 점검 전)",
+       "prob": 0.6,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 76731220.65114368
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "pid": 44735,
+   "name": "[박씨 2개 = 대박] 흥부네 26UP 하우스",
+   "price_fc": 1900,
+   "components": [
+    {
+     "name": "[박씨 2개 = 대박] 흥부네 26UP 하우스",
+     "count": 1
+    }
+   ],
+   "period": "2026.10.29(목) 08:00 ~ 11.26(목) 08:00",
+   "limit_text": "",
+   "limit": null,
+   "status": "ok",
+   "ev": {
+    "bp": 0.0,
+    "player": 107423708.91160116
+   },
+   "per_fc": {
+    "none": 33923.276498400366,
+    "top": 38446.38003152041,
+    "pc": 40707.93179808043,
+    "pc_top": 45231.03533120049
+   },
+   "parts": [
+    {
+     "name": "[박씨 2개 = 대박] 흥부네 26UP 하우스",
+     "count": 1,
+     "bp": 0.0,
+     "player": 107423708.91160116,
+     "breakdown": [
+      {
+       "name": "26UP Top Price 160 (11강)",
+       "prob": 0.0025009999999999998,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 482976289.50954443
+      },
+      {
+       "name": "UC, SPT, 26FSL Top Price 245 (11강)",
+       "prob": 0.009250000000000001,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 388767996.1886974
+      },
+      {
+       "name": "WG 포함 Top Price 1600 (11강, 104+)",
+       "prob": 0.010988,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 175183644.77012292
+      },
+      {
+       "name": "26UP Top Price 60 (10강)",
+       "prob": 0.005738,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 633722591.7739716
+      },
+      {
+       "name": "SPT, 26FSL 포함 Top Price 770 (10강, 108+)",
+       "prob": 0.0326,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 166187289.34246132
+      },
+      {
+       "name": "SPT, 26FSL 포함 Top Price 205 (9강, 108+)",
+       "prob": 0.06,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 157196021.52974138
+      },
+      {
+       "name": "SPT, 26FSL 포함 Top Price 105 (8강, 108+)",
+       "prob": 0.07,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 148048509.4438309
+      },
+      {
+       "name": "26UP Top Price 110 (8~9강)",
+       "prob": 0.011000000000000001,
+       "amount": 2,
+       "bp": 0.0,
+       "player": 459605587.463914
+      },
+      {
+       "name": "SPT, 26FSL 포함 Top Price 120 (1~7강)",
+       "prob": 0.19792300000000002,
+       "amount": 3,
+       "bp": 0.0,
+       "player": 26433756.60593593
+      },
+      {
+       "name": "제비가 물어다준 박씨 (박씨 2개=대박)(~26.12.03 점검 전)",
+       "prob": 0.6,
+       "amount": 1,
+       "bp": 0.0,
+       "player": 76731220.65114368
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "pid": 44736,
+   "name": "SPT, 26FSL 포함 Top Price 800 (5~9강, 105+)",
+   "price_fc": 990,
+   "components": [
+    {
+     "name": "SPT, 26FSL 포함 Top Price 800 (5~9강, 105+)",
+     "count": 1
+    }
+   ],
+   "period": "2026.10.29(목) 08:00 ~ 11.26(목) 08:00",
+   "limit_text": "구매제한 계정 1회",
+   "limit": 1,
+   "status": "ok",
+   "ev": {
+    "bp": 0.0,
+    "player": 41132368.52442608
+   },
+   "per_fc": {
+    "none": 24928.708196621865,
+    "top": 28252.535956171443,
+    "pc": 29914.449835946238,
+    "pc_top": 33238.27759549583
+   },
+   "parts": [
+    {
+     "name": "SPT, 26FSL 포함 Top Price 800 (5~9강, 105+)",
+     "count": 1,
+     "bp": 0.0,
+     "player": 41132368.52442608,
+     "breakdown": null
+    }
+   ]
+  },
+  {
+   "pid": 48222,
+   "name": "[동일확률] SPT 포함 Top Price 6530 (1강)",
+   "price_fc": 100,
+   "components": [
+    {
+     "name": "[동일확률] SPT 포함 Top Price 6530 (1강)",
+     "count": 1
+    }
+   ],
+   "period": "2026.09.01(화) 00:00 ~ 01.01(금) 00:00",
+   "limit_text": "구매제한 월50회",
+   "limit": 50,
+   "status": "ok",
+   "ev": {
+    "bp": 0.0,
+    "player": 169812.56967840798
+   },
+   "per_fc": {
+    "none": 1018.8754180704477,
+    "top": 1154.7254738131742,
+    "pc": 1222.6505016845374,
+    "pc_top": 1358.500557427264
+   },
+   "parts": [
+    {
+     "name": "[동일확률] SPT 포함 Top Price 6530 (1강)",
+     "count": 1,
+     "bp": 0.0,
+     "player": 169812.56967840798,
+     "breakdown": null
+    }
+   ]
+  },
+  {
+   "pid": 48227,
+   "name": "BP 카드 1만",
+   "price_fc": 100,
+   "components": [
+    {
+     "name": "BP 카드 1만",
+     "count": 1
+    }
+   ],
+   "period": "2026.08.27(목) 08:00 ~",
+   "limit_text": "구매제한 월50회",
+   "limit": 50,
+   "status": "ok",
+   "ev": {
+    "bp": 10000.0,
+    "player": 0.0
+   },
+   "per_fc": {
+    "none": 100.0,
+    "top": 100.0,
+    "pc": 100.0,
+    "pc_top": 100.0
+   },
+   "parts": [
+    {
+     "name": "BP 카드 1만",
+     "count": 1,
+     "bp": 10000.0,
+     "player": 0.0,
+     "breakdown": null
+    }
+   ]
+  }
+ ],
+ "skipped": [
+  {
+   "name": "시뮬레이션권 상자",
+   "reason": "BP로 환산할 수 없는 상품"
+  }
+ ],
+ "packs": {
+  "26UP Top Price 90 (11강, 115+)": {
+   "top_n": 90,
+   "strongs": [
+    11
+   ],
+   "ovr_min": 115,
+   "classes": [
+    "26UP"
+   ],
+   "pool_size": 200,
+   "missing_ranks": 0,
+   "missing_prob": 0.0,
+   "floor_price": 75300000,
+   "requests": 1,
+   "prob_sum": 1.0000000000000009,
+   "expected_price": 1338858773.902869,
+   "max_price": 18200000000,
+   "min_price": 572000000,
+   "top3": [
+    [
+     "얀 디오만데",
+     "26UP",
+     11,
+     18200000000
+    ],
+    [
+     "모건 로저스",
+     "26UP",
+     11,
+     13300000000
+    ],
+    [
+     "비니시우스",
+     "26UP",
+     11,
+     12800000000
+    ]
+   ],
+   "rank_n": 572000000
+  },
+  "UC Top Price 106 (11강, 118+)": {
+   "top_n": 106,
+   "strongs": [
+    11
+   ],
+   "ovr_min": 118,
+   "classes": [
+    "UC"
+   ],
+   "pool_size": 113,
+   "missing_ranks": 0,
+   "missing_prob": 0.0,
+   "floor_price": 222000000,
+   "requests": 1,
+   "prob_sum": 0.9999999999999997,
+   "expected_price": 1004393014.5653884,
+   "max_price": 301000000000,
+   "min_price": 520000000,
+   "top3": [
+    [
+     "크리스티아누 호날두",
+     "UC",
+     11,
+     301000000000
+    ],
+    [
+     "티에리 앙리",
+     "UC",
+     11,
+     60000000000
+    ],
+    [
+     "즐라탄",
+     "UC",
+     11,
+     50000000000
+    ]
+   ],
+   "rank_n": 520000000
+  },
+  "SPT, 26FSL 포함 Top Price 100 (11강)": {
+   "top_n": 100,
+   "strongs": [
+    11
+   ],
+   "ovr_min": 0,
+   "classes": [
+    "26FSL",
+    "SPT"
+   ],
+   "pool_size": 150,
+   "missing_ranks": 0,
+   "missing_prob": 0.0,
+   "floor_price": 26200000,
+   "requests": 1,
+   "prob_sum": 1.0000000000000004,
+   "expected_price": 1092232543.8635652,
+   "max_price": 73400000000,
+   "min_price": 488000000,
+   "top3": [
+    [
+     "루드 굴리트",
+     "26FSL",
+     11,
+     73400000000
+    ],
+    [
+     "호나우두",
+     "26FSL",
+     11,
+     66600000000
+    ],
+    [
+     "이언 라이트",
+     "SPT",
+     11,
+     46500000000
+    ]
+   ],
+   "rank_n": 488000000
+  },
+  "WG 포함 Top Price 460 (11강, 115+)": {
+   "top_n": 460,
+   "strongs": [
+    11
+   ],
+   "ovr_min": 115,
+   "classes": [
+    "25DP",
+    "25UCL",
+    "26HR",
+    "CH",
+    "FAC",
+    "NO7",
+    "PTG",
+    "TK",
+    "WG",
+    "WS"
+   ],
+   "pool_size": 597,
+   "missing_ranks": 0,
+   "missing_prob": 0.0,
+   "floor_price": 396000000,
+   "requests": 3,
+   "prob_sum": 0.9999999999999999,
+   "expected_price": 1040987890.6764784,
+   "max_price": 150000000000,
+   "min_price": 563000000,
+   "top3": [
+    [
+     "크리스티아누 호날두",
+     "WS",
+     11,
+     150000000000
+    ],
+    [
+     "호나우두",
+     "WG",
+     11,
+     105000000000
+    ],
+    [
+     "해리 케인",
+     "25UCL",
+     11,
+     56000000000
+    ]
+   ],
+   "rank_n": 563000000
+  },
+  "26UP, UC 포함 Top Price 310 (10강, 115+)": {
+   "top_n": 310,
+   "strongs": [
+    10
+   ],
+   "ovr_min": 115,
+   "classes": [
+    "25DP",
+    "25UCL",
+    "26FSL",
+    "26HR",
+    "26UP",
+    "CH",
+    "FAC",
+    "NO7",
+    "PTG",
+    "SPT",
+    "TK",
+    "UC",
+    "WG",
+    "WS"
+   ],
+   "pool_size": 398,
+   "missing_ranks": 0,
+   "missing_prob": 0.0,
+   "floor_price": 356000000,
+   "requests": 2,
+   "prob_sum": 1.0,
+   "expected_price": 814382160.4323419,
+   "max_price": 59700000000,
+   "min_price": 419000000,
+   "top3": [
+    [
+     "크리스티아누 호날두",
+     "UC",
+     10,
+     59700000000
+    ],
+    [
+     "크리스티아누 호날두",
+     "WS",
+     10,
+     49600000000
+    ],
+    [
+     "호나우두",
+     "WG",
+     10,
+     11800000000
+    ]
+   ],
+   "rank_n": 419000000
+  },
+  "[동일확률] 26UP Top Price 1435 (1~7강)": {
+   "top_n": 1435,
+   "strongs": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "ovr_min": 0,
+   "classes": [
+    "26UP"
+   ],
+   "pool_size": 1434,
+   "missing_ranks": 1,
+   "missing_prob": 0.000696864111498258,
+   "floor_price": 34700,
+   "requests": 14,
+   "prob_sum": 1.0000000000000002,
+   "expected_price": 7677111.289198599,
+   "max_price": 1640000000,
+   "min_price": 34700,
+   "top3": [
+    [
+     "얀 디오만데",
+     "26UP",
+     7,
+     1640000000
+    ],
+    [
+     "부카요 사카",
+     "26UP",
+     7,
+     529000000
+    ],
+    [
+     "모건 로저스",
+     "26UP",
+     7,
+     462000000
+    ]
+   ],
+   "rank_n": null
+  },
+  "26UP Top Price 95 (11강, 114+)": {
+   "top_n": 95,
+   "strongs": [
+    11
+   ],
+   "ovr_min": 114,
+   "classes": [
+    "26UP"
+   ],
+   "pool_size": 200,
+   "missing_ranks": 0,
+   "missing_prob": 0.0,
+   "floor_price": 75300000,
+   "requests": 1,
+   "prob_sum": 0.9999999999999996,
+   "expected_price": 1371552563.7037995,
+   "max_price": 18200000000,
+   "min_price": 546000000,
+   "top3": [
+    [
+     "얀 디오만데",
+     "26UP",
+     11,
+     18200000000
+    ],
+    [
+     "모건 로저스",
+     "26UP",
+     11,
+     13300000000
+    ],
+    [
+     "비니시우스",
+     "26UP",
+     11,
+     12800000000
+    ]
+   ],
+   "rank_n": 546000000
+  },
+  "UC Top Price 110 (11강, 117+)": {
+   "top_n": 110,
+   "strongs": [
+    11
+   ],
+   "ovr_min": 117,
+   "classes": [
+    "UC"
+   ],
+   "pool_size": 113,
+   "missing_ranks": 0,
+   "missing_prob": 0.0,
+   "floor_price": 202000000,
+   "requests": 0,
+   "prob_sum": 1.0000000000000018,
+   "expected_price": 944210298.9080772,
+   "max_price": 301000000000,
+   "min_price": 400000000,
+   "top3": [
+    [
+     "크리스티아누 호날두",
+     "UC",
+     11,
+     301000000000
+    ],
+    [
+     "티에리 앙리",
+     "UC",
+     11,
+     61000000000
+    ],
+    [
+     "즐라탄",
+     "UC",
+     11,
+     53200000000
+    ]
+   ],
+   "rank_n": 400000000
+  },
+  "SPT, 26FSL 포함 Top Price 630 (11강, 114+)": {
+   "top_n": 630,
+   "strongs": [
+    11
+   ],
+   "ovr_min": 114,
+   "classes": [
+    "24EP",
+    "25DP",
+    "25UCL",
+    "26FSL",
+    "26HR",
+    "CH",
+    "CU",
+    "FAC",
+    "NO7",
+    "PTG",
+    "SPT",
+    "TK",
+    "WG",
+    "WS"
+   ],
+   "pool_size": 793,
+   "missing_ranks": 0,
+   "missing_prob": 0.0,
+   "floor_price": 379000000,
+   "requests": 4,
+   "prob_sum": 1.0,
+   "expected_price": 1012138963.4076139,
+   "max_price": 150000000000,
+   "min_price": 522000000,
+   "top3": [
+    [
+     "크리스티아누 호날두",
+     "WS",
+     11,
+     150000000000
+    ],
+    [
+     "호나우두",
+     "WG",
+     11,
+     95000000000
+    ],
+    [
+     "루드 굴리트",
+     "26FSL",
+     11,
+     73400000000
+    ]
+   ],
+   "rank_n": 522000000
+  },
+  "UC Top Price 60 (10강, 117+)": {
+   "top_n": 60,
+   "strongs": [
+    10
+   ],
+   "ovr_min": 117,
+   "classes": [
+    "UC"
+   ],
+   "pool_size": 113,
+   "missing_ranks": 0,
+   "missing_prob": 0.0,
+   "floor_price": 80000000,
+   "requests": 1,
+   "prob_sum": 0.9999999999999996,
+   "expected_price": 735857493.4379516,
+   "max_price": 59700000000,
+   "min_price": 418000000,
+   "top3": [
+    [
+     "크리스티아누 호날두",
+     "UC",
+     10,
+     59700000000
+    ],
+    [
+     "즐라탄",
+     "UC",
+     10,
+     11700000000
+    ],
+    [
+     "티에리 앙리",
+     "UC",
+     10,
+     9920000000
+    ]
+   ],
+   "rank_n": 418000000
+  },
+  "26UP 포함 Top Price 270 (10강, 114+)": {
+   "top_n": 270,
+   "strongs": [
+    10
+   ],
+   "ovr_min": 114,
+   "classes": [
+    "24EP",
+    "25DP",
+    "25UCL",
+    "26FSL",
+    "26HR",
+    "26UP",
+    "CH",
+    "CU",
+    "FAC",
+    "NO7",
+    "PTG",
+    "SPT",
+    "TK",
+    "WG",
+    "WS"
+   ],
+   "pool_size": 399,
+   "missing_ranks": 0,
+   "missing_prob": 0.0,
+   "floor_price": 290000000,
+   "requests": 2,
+   "prob_sum": 0.9999999999999998,
+   "expected_price": 889677534.3935307,
+   "max_price": 49600000000,
+   "min_price": 401000000,
+   "top3": [
+    [
+     "크리스티아누 호날두",
+     "WS",
+     10,
+     49600000000
+    ],
+    [
+     "호나우두",
+     "WG",
+     10,
+     11800000000
+    ],
+    [
+     "얀 디오만데",
+     "26UP",
+     10,
+     11100000000
+    ]
+   ],
+   "rank_n": 401000000
+  },
+  "[TRIPLE UP] 26UP Top Price 116 (11강, 114+)": {
+   "top_n": 116,
+   "strongs": [
+    11
+   ],
+   "ovr_min": 114,
+   "classes": [
+    "26UP"
+   ],
+   "pool_size": 200,
+   "missing_ranks": 0,
+   "missing_prob": 0.0,
+   "floor_price": 75300000,
+   "requests": 0,
+   "prob_sum": 0.9999999999999998,
+   "expected_price": 1202902946.3288264,
+   "max_price": 18200000000,
+   "min_price": 423000000,
+   "top3": [
+    [
+     "얀 디오만데",
+     "26UP",
+     11,
+     18200000000
+    ],
+    [
+     "모건 로저스",
+     "26UP",
+     11,
+     13300000000
+    ],
+    [
+     "비니시우스",
+     "26UP",
+     11,
+     12800000000
+    ]
+   ],
+   "rank_n": 423000000
+  },
+  "[TRIPLE UP] UC Top Price 111 (11강, 117+)": {
+   "top_n": 111,
+   "strongs": [
+    11
+   ],
+   "ovr_min": 117,
+   "classes": [
+    "UC"
+   ],
+   "pool_size": 113,
+   "missing_ranks": 0,
+   "missing_prob": 0.0,
+   "floor_price": 202000000,
+   "requests": 0,
+   "prob_sum": 1.0000000000000002,
+   "expected_price": 845290159.0858371,
+   "max_price": 301000000000,
+   "min_price": 392000000,
+   "top3": [
+    [
+     "크리스티아누 호날두",
+     "UC",
+     11,
+     301000000000
+    ],
+    [
+     "티에리 앙리",
+     "UC",
+     11,
+     61000000000
+    ],
+    [
+     "즐라탄",
+     "UC",
+     11,
+     53200000000
+    ]
+   ],
+   "rank_n": 392000000
+  },
+  "[DOUBLE UP] SPT, 26FSL 포함 Top Price 880 (11강, 114+)": {
+   "top_n": 880,
+   "strongs": [
+    11
+   ],
+   "ovr_min": 114,
+   "classes": [
+    "24EP",
+    "25DP",
+    "25UCL",
+    "26FSL",
+    "26HR",
+    "CH",
+    "CU",
+    "DCB",
+    "FAC",
+    "LE",
+    "NO7",
+    "PTG",
+    "SPT",
+    "TK",
+    "WB",
+    "WG",
+    "WS"
+   ],
+   "pool_size": 995,
+   "missing_ranks": 0,
+   "missing_prob": 0.0,
+   "floor_price": 301000000,
+   "requests": 5,
+   "prob_sum": 1.0000000000000007,
+   "expected_price": 721440472.0491587,
+   "max_price": 150000000000,
+   "min_price": 369000000,
+   "top3": [
+    [
+     "크리스티아누 호날두",
+     "WS",
+     11,
+     150000000000
+    ],
+    [
+     "호나우두",
+     "WG",
+     11,
+     95000000000
+    ],
+    [
+     "루드 굴리트",
+     "26FSL",
+     11,
+     73400000000
+    ]
+   ],
+   "rank_n": 369000000
+  },
+  "[DOUBLE UP] 26UP 포함 Top Price 490 (10강, 110+)": {
+   "top_n": 490,
+   "strongs": [
+    10
+   ],
+   "ovr_min": 110,
+   "classes": [
+    "24EP",
+    "25DP",
+    "25UCL",
+    "26FSL",
+    "26HR",
+    "26UP",
+    "CH",
+    "CU",
+    "DCB",
+    "FAC",
+    "LE",
+    "NO7",
+    "PTG",
+    "SPT",
+    "TK",
+    "UC",
+    "WB",
+    "WG",
+    "WS"
+   ],
+   "pool_size": 597,
+   "missing_ranks": 0,
+   "missing_prob": 0.0,
+   "floor_price": 220000000,
+   "requests": 3,
+   "prob_sum": 0.9999999999999998,
+   "expected_price": 536222498.2623187,
+   "max_price": 59700000000,
+   "min_price": 304000000,
+   "top3": [
+    [
+     "크리스티아누 호날두",
+     "UC",
+     10,
+     59700000000
+    ],
+    [
+     "크리스티아누 호날두",
+     "WS",
+     10,
+     49600000000
+    ],
+    [
+     "호나우두",
+     "WG",
+     10,
+     11800000000
+    ]
+   ],
+   "rank_n": 304000000
+  },
+  "[DOUBLE UP] 26UP 포함 Top Price 125 (9강, 110+)": {
+   "top_n": 125,
+   "strongs": [
+    9
+   ],
+   "ovr_min": 110,
+   "classes": [
+    "24EP",
+    "25DP",
+    "25UCL",
+    "26FSL",
+    "26HR",
+    "26UP",
+    "CH",
+    "CU",
+    "DCB",
+    "FAC",
+    "LE",
+    "NO7",
+    "PTG",
+    "SPT",
+    "TK",
+    "UC",
+    "WB",
+    "WG",
+    "WS"
+   ],
+   "pool_size": 200,
+   "missing_ranks": 0,
+   "missing_prob": 0.0,
+   "floor_price": 208000000,
+   "requests": 1,
+   "prob_sum": 1.0000000000000004,
+   "expected_price": 666501794.3047289,
+   "max_price": 41200000000,
+   "min_price": 371000000,
+   "top3": [
+    [
+     "크리스티아누 호날두",
+     "UC",
+     9,
+     41200000000
+    ],
+    [
+     "크리스티아누 호날두",
+     "WS",
+     9,
+     20300000000
+    ],
+    [
+     "얀 디오만데",
+     "26UP",
+     9,
+     7670000000
+    ]
+   ],
+   "rank_n": 371000000
+  },
+  "[DOUBLE UP] 26UP 포함 Top Price 160 (8~9강, 110+)": {
+   "top_n": 160,
+   "strongs": [
+    8,
+    9
+   ],
+   "ovr_min": 110,
+   "classes": [
+    "24EP",
+    "25DP",
+    "25UCL",
+    "26FSL",
+    "26HR",
+    "26UP",
+    "CH",
+    "CU",
+    "DCB",
+    "FAC",
+    "LE",
+    "NO7",
+    "PTG",
+    "SPT",
+    "TK",
+    "WB",
+    "WG",
+    "WS"
+   ],
+   "pool_size": 290,
+   "missing_ranks": 0,
+   "missing_prob": 0.0,
+   "floor_price": 145000000,
+   "requests": 2,
+   "prob_sum": 1.0000000000000016,
+   "expected_price": 704781238.9304781,
+   "max_price": 20300000000,
+   "min_price": 355000000,
+   "top3": [
+    [
+     "크리스티아누 호날두",
+     "WS",
+     9,
+     20300000000
+    ],
+    [
+     "크리스티아누 호날두",
+     "WS",
+     8,
+     14000000000
+    ],
+    [
+     "얀 디오만데",
+     "26UP",
+     9,
+     7670000000
+    ]
+   ],
+   "rank_n": 355000000
+  },
+  "[DOUBLE UP] 26UP 포함 Top Price 80 (8강, 110+)": {
+   "top_n": 80,
+   "strongs": [
+    8
+   ],
+   "ovr_min": 110,
+   "classes": [
+    "24EP",
+    "25DP",
+    "25UCL",
+    "26FSL",
+    "26HR",
+    "26UP",
+    "CH",
+    "CU",
+    "DCB",
+    "FAC",
+    "LE",
+    "NO7",
+    "PTG",
+    "SPT",
+    "TK",
+    "UC",
+    "WB",
+    "WG",
+    "WS"
+   ],
+   "pool_size": 200,
+   "missing_ranks": 0,
+   "missing_prob": 0.0,
+   "floor_price": 96500000,
+   "requests": 1,
+   "prob_sum": 0.9999999999999996,
+   "expected_price": 643131720.248634,
+   "max_price": 28100000000,
+   "min_price": 369000000,
+   "top3": [
+    [
+     "크리스티아누 호날두",
+     "UC",
+     8,
+     28100000000
+    ],
+    [
+     "크리스티아누 호날두",
+     "WS",
+     8,
+     14000000000
+    ],
+    [
+     "크리스티아누 호날두",
+     "NO7",
+     8,
+     5150000000
+    ]
+   ],
+   "rank_n": 369000000
+  },
+  "26PL Top Price 5500 (1~11강)": {
+   "top_n": 5500,
+   "strongs": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+   ],
+   "ovr_min": 0,
+   "classes": [
+    "26PLA"
+   ],
+   "pool_size": 4638,
+   "missing_ranks": 862,
+   "missing_prob": 0.17463533225283787,
+   "floor_price": 1000,
+   "requests": 29,
+   "prob_sum": 1.0000000000000018,
+   "expected_price": 117747.87479740134,
+   "max_price": 750000000,
+   "min_price": 1000,
+   "top3": [
+    [
+     "알리송",
+     "26PLA",
+     11,
+     750000000
+    ],
+    [
+     "마이크 메냥",
+     "26PLA",
+     11,
+     583000000
+    ],
+    [
+     "S. 라먼스",
+     "26PLA",
+     11,
+     507000000
+    ]
+   ],
+   "rank_n": null
+  },
+  "SPT, 26FSL 포함 Top Price 800 (5~9강, 105+)": {
+   "top_n": 800,
+   "strongs": [
+    5,
+    6,
+    7,
+    8,
+    9
+   ],
+   "ovr_min": 105,
+   "classes": [
+    "24EP",
+    "25DP",
+    "25UCL",
+    "26FSL",
+    "26HR",
+    "CH",
+    "CU",
+    "DCB",
+    "FAC",
+    "LE",
+    "NO7",
+    "PTG",
+    "SPT",
+    "TK",
+    "WB",
+    "WG",
+    "WS"
+   ],
+   "pool_size": 1685,
+   "missing_ranks": 0,
+   "missing_prob": 0.0,
+   "floor_price": 8700000,
+   "requests": 12,
+   "prob_sum": 1.0000000000000002,
+   "expected_price": 41132368.52442608,
+   "max_price": 20300000000,
+   "min_price": 20200000,
+   "top3": [
+    [
+     "크리스티아누 호날두",
+     "WS",
+     9,
+     20300000000
+    ],
+    [
+     "크리스티아누 호날두",
+     "WS",
+     8,
+     14000000000
+    ],
+    [
+     "크리스티아누 호날두",
+     "WS",
+     7,
+     7750000000
+    ]
+   ],
+   "rank_n": 20200000
+  },
+  "26UP Top Price 160 (11강)": {
+   "top_n": 160,
+   "strongs": [
+    11
+   ],
+   "ovr_min": 0,
+   "classes": [
+    "26UP"
+   ],
+   "pool_size": 200,
+   "missing_ranks": 0,
+   "missing_prob": 0.0,
+   "floor_price": 75300000,
+   "requests": 1,
+   "prob_sum": 1.0000000000000009,
+   "expected_price": 482976289.50954443,
+   "max_price": 18200000000,
+   "min_price": 280000000,
+   "top3": [
+    [
+     "얀 디오만데",
+     "26UP",
+     11,
+     18200000000
+    ],
+    [
+     "모건 로저스",
+     "26UP",
+     11,
+     13300000000
+    ],
+    [
+     "비니시우스",
+     "26UP",
+     11,
+     12800000000
+    ]
+   ],
+   "rank_n": 280000000
+  },
+  "UC, SPT, 26FSL Top Price 245 (11강)": {
+   "top_n": 245,
+   "strongs": [
+    11
+   ],
+   "ovr_min": 0,
+   "classes": [
+    "26FSL",
+    "SPT",
+    "UC"
+   ],
+   "pool_size": 263,
+   "missing_ranks": 0,
+   "missing_prob": 0.0,
+   "floor_price": 26200000,
+   "requests": 2,
+   "prob_sum": 1.0,
+   "expected_price": 388767996.1886974,
+   "max_price": 301000000000,
+   "min_price": 200000000,
+   "top3": [
+    [
+     "크리스티아누 호날두",
+     "UC",
+     11,
+     301000000000
+    ],
+    [
+     "루드 굴리트",
+     "26FSL",
+     11,
+     73400000000
+    ],
+    [
+     "호나우두",
+     "26FSL",
+     11,
+     66600000000
+    ]
+   ],
+   "rank_n": 200000000
+  },
+  "WG 포함 Top Price 1600 (11강, 104+)": {
+   "top_n": 1600,
+   "strongs": [
+    11
+   ],
+   "ovr_min": 104,
+   "classes": [
+    "24EP",
+    "25DP",
+    "25UCL",
+    "26HR",
+    "CH",
+    "CU",
+    "DCB",
+    "FAC",
+    "LE",
+    "NO7",
+    "PTG",
+    "TK",
+    "WB",
+    "WG",
+    "WS"
+   ],
+   "pool_size": 1785,
+   "missing_ranks": 0,
+   "missing_prob": 0.0,
+   "floor_price": 51500000,
+   "requests": 9,
+   "prob_sum": 1.0000000000000004,
+   "expected_price": 175183644.77012292,
+   "max_price": 150000000000,
+   "min_price": 72200000,
+   "top3": [
+    [
+     "크리스티아누 호날두",
+     "WS",
+     11,
+     150000000000
+    ],
+    [
+     "호나우두",
+     "WG",
+     11,
+     95000000000
+    ],
+    [
+     "해리 케인",
+     "25UCL",
+     11,
+     56100000000
+    ]
+   ],
+   "rank_n": 72200000
+  },
+  "26UP Top Price 60 (10강)": {
+   "top_n": 60,
+   "strongs": [
+    10
+   ],
+   "ovr_min": 0,
+   "classes": [
+    "26UP"
+   ],
+   "pool_size": 200,
+   "missing_ranks": 0,
+   "missing_prob": 0.0,
+   "floor_price": 18500000,
+   "requests": 1,
+   "prob_sum": 1.0000000000000004,
+   "expected_price": 633722591.7739716,
+   "max_price": 11100000000,
+   "min_price": 276000000,
+   "top3": [
+    [
+     "얀 디오만데",
+     "26UP",
+     10,
+     11100000000
+    ],
+    [
+     "부카요 사카",
+     "26UP",
+     10,
+     4830000000
+    ],
+    [
+     "비니시우스",
+     "26UP",
+     10,
+     4440000000
+    ]
+   ],
+   "rank_n": 276000000
+  },
+  "SPT, 26FSL 포함 Top Price 770 (10강, 108+)": {
+   "top_n": 770,
+   "strongs": [
+    10
+   ],
+   "ovr_min": 108,
+   "classes": [
+    "25DP",
+    "25UCL",
+    "26FSL",
+    "26HR",
+    "CH",
+    "DCB",
+    "FAC",
+    "LE",
+    "NO7",
+    "PTG",
+    "SPT",
+    "TK",
+    "WB",
+    "WG",
+    "WS"
+   ],
+   "pool_size": 796,
+   "missing_ranks": 0,
+   "missing_prob": 0.0,
+   "floor_price": 67200000,
+   "requests": 4,
+   "prob_sum": 1.0000000000000002,
+   "expected_price": 166187289.34246132,
+   "max_price": 49600000000,
+   "min_price": 71800000,
+   "top3": [
+    [
+     "크리스티아누 호날두",
+     "WS",
+     10,
+     49600000000
+    ],
+    [
+     "호나우두",
+     "WG",
+     10,
+     11800000000
+    ],
+    [
+     "크리스티아누 호날두",
+     "NO7",
+     10,
+     10800000000
+    ]
+   ],
+   "rank_n": 71800000
+  },
+  "SPT, 26FSL 포함 Top Price 205 (9강, 108+)": {
+   "top_n": 205,
+   "strongs": [
+    9
+   ],
+   "ovr_min": 108,
+   "classes": [
+    "25DP",
+    "25UCL",
+    "26FSL",
+    "26HR",
+    "CH",
+    "DCB",
+    "FAC",
+    "LE",
+    "NO7",
+    "PTG",
+    "SPT",
+    "TK",
+    "WB",
+    "WG",
+    "WS"
+   ],
+   "pool_size": 399,
+   "missing_ranks": 0,
+   "missing_prob": 0.0,
+   "floor_price": 24100000,
+   "requests": 2,
+   "prob_sum": 1.0000000000000002,
+   "expected_price": 157196021.52974138,
+   "max_price": 20300000000,
+   "min_price": 89400000,
+   "top3": [
+    [
+     "크리스티아누 호날두",
+     "WS",
+     9,
+     20300000000
+    ],
+    [
+     "크리스티아누 호날두",
+     "NO7",
+     9,
+     7470000000
+    ],
+    [
+     "호나우두",
+     "WG",
+     9,
+     4640000000
+    ]
+   ],
+   "rank_n": 89400000
+  },
+  "SPT, 26FSL 포함 Top Price 105 (8강, 108+)": {
+   "top_n": 105,
+   "strongs": [
+    8
+   ],
+   "ovr_min": 108,
+   "classes": [
+    "25DP",
+    "25UCL",
+    "26FSL",
+    "26HR",
+    "CH",
+    "DCB",
+    "FAC",
+    "LE",
+    "NO7",
+    "PTG",
+    "SPT",
+    "TK",
+    "WB",
+    "WG",
+    "WS"
+   ],
+   "pool_size": 200,
+   "missing_ranks": 0,
+   "missing_prob": 0.0,
+   "floor_price": 23100000,
+   "requests": 1,
+   "prob_sum": 1.0000000000000004,
+   "expected_price": 148048509.4438309,
+   "max_price": 14000000000,
+   "min_price": 55500000,
+   "top3": [
+    [
+     "크리스티아누 호날두",
+     "WS",
+     8,
+     14000000000
+    ],
+    [
+     "크리스티아누 호날두",
+     "NO7",
+     8,
+     5150000000
+    ],
+    [
+     "호나우두",
+     "WG",
+     8,
+     2220000000
+    ]
+   ],
+   "rank_n": 55500000
+  },
+  "26UP Top Price 110 (8~9강)": {
+   "top_n": 110,
+   "strongs": [
+    8,
+    9
+   ],
+   "ovr_min": 0,
+   "classes": [
+    "26UP"
+   ],
+   "pool_size": 273,
+   "missing_ranks": 0,
+   "missing_prob": 0.0,
+   "floor_price": 12200000,
+   "requests": 2,
+   "prob_sum": 0.9999999999999997,
+   "expected_price": 459605587.463914,
+   "max_price": 7670000000,
+   "min_price": 133000000,
+   "top3": [
+    [
+     "얀 디오만데",
+     "26UP",
+     9,
+     7670000000
+    ],
+    [
+     "얀 디오만데",
+     "26UP",
+     8,
+     4940000000
+    ],
+    [
+     "부카요 사카",
+     "26UP",
+     9,
+     3220000000
+    ]
+   ],
+   "rank_n": 133000000
+  },
+  "SPT, 26FSL 포함 Top Price 120 (1~7강)": {
+   "top_n": 120,
+   "strongs": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "ovr_min": 0,
+   "classes": [
+    "25DP",
+    "25UCL",
+    "26FSL",
+    "26HR",
+    "CH",
+    "DCB",
+    "FAC",
+    "LE",
+    "NO7",
+    "PTG",
+    "SPT",
+    "TK",
+    "WB",
+    "WG",
+    "WS"
+   ],
+   "pool_size": 244,
+   "missing_ranks": 0,
+   "missing_prob": 0.0,
+   "floor_price": 11900000,
+   "requests": 7,
+   "prob_sum": 0.9999999999999997,
+   "expected_price": 26433756.60593593,
+   "max_price": 7750000000,
+   "min_price": 19000000,
+   "top3": [
+    [
+     "크리스티아누 호날두",
+     "WS",
+     7,
+     7750000000
+    ],
+    [
+     "크리스티아누 호날두",
+     "WS",
+     6,
+     3230000000
+    ],
+    [
+     "크리스티아누 호날두",
+     "NO7",
+     7,
+     2860000000
+    ]
+   ],
+   "rank_n": 19000000
+  },
+  "[동일확률] SPT 포함 Top Price 6530 (1강)": {
+   "top_n": 6530,
+   "strongs": [
+    1
+   ],
+   "ovr_min": 0,
+   "classes": [
+    "2012KH",
+    "23HR",
+    "23HW",
+    "23NG",
+    "24EP",
+    "24HR",
+    "25DP",
+    "25FSL",
+    "25HR",
+    "26HR",
+    "BDO",
+    "BLD",
+    "BOE21",
+    "BTB",
+    "CAP",
+    "CC",
+    "CFA",
+    "CH",
+    "COC",
+    "CU",
+    "DC",
+    "DCB",
+    "EBS",
+    "FA",
+    "FAC",
+    "FCA",
+    "GR",
+    "GRU",
+    "HG",
+    "HOT",
+    "JNM",
+    "JVA",
+    "LA",
+    "LD",
+    "LE",
+    "LH",
+    "LN",
+    "LOL",
+    "MC",
+    "MDL",
+    "MOG",
+    "NHD",
+    "NO7",
+    "NTG",
+    "OTW",
+    "RMCF",
+    "RTN",
+    "SPL",
+    "SPT",
+    "TB",
+    "TC",
+    "TK",
+    "TKI",
+    "TKL",
+    "TT",
+    "UP",
+    "UT",
+    "VTR",
+    "WB",
+    "WG",
+    "WS"
+   ],
+   "pool_size": 3193,
+   "missing_ranks": 3337,
+   "missing_prob": 0.5110260336906869,
+   "floor_price": 1000,
+   "requests": 16,
+   "prob_sum": 0.9999999999999974,
+   "expected_price": 169812.56967840798,
+   "max_price": 701000000,
+   "min_price": 1000,
+   "top3": [
+    [
+     "크리스티아누 호날두",
+     "WS",
+     1,
+     701000000
+    ],
+    [
+     "크리스티아누 호날두",
+     "NO7",
+     1,
+     242000000
+    ],
+    [
+     "세르히오 라모스",
+     "DC",
+     1,
+     7430000
+    ]
+   ],
+   "rank_n": null
+  }
+ }
+}

@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FC온라인 현질효율판 — 웹샵 상품 1 FC당 기대 BP</title>
+<meta name="description" content="FC온라인 웹샵 확률형 상품과 이벤트 상점(붕어빵 속 SSS, 열쇠 상점)의 1 FC당 기대 BP를 매일 자동 계산해 비교합니다. 예산을 넣으면 가장 이득인 현질 조합을 추천해요.">
+<meta name="keywords" content="FC온라인, 피파온라인, 현질 효율, BP 효율, 웹샵, 선수팩, 기대값, 확률, 붕어빵 속 SSS, 열쇠 상점">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:title" content="FC온라인 현질효율판 — 1 FC당 기대 BP 비교">
+<meta property="og:description" content="같은 FC로 BP를 가장 많이 돌려받는 상품은? 웹샵·이벤트 상점 효율을 매일 자동 계산해요.">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary_large_image">
+<!--SITE-START--><!--SITE-END-->
+<style>
+  /* 검은 배경 + FC온라인 형광 초록 포인트 (항상 어두운 화면) */
+  :root {
+    color-scheme: dark;
+    --page: #000000;
+    --surface: #111311;
+    --surface-2: #0a0b0a;
+    --ink: #f2f4f2;
+    --ink-2: #b9c0b9;
+    --muted: #8a918a;
+    --grid: #262a26;
+    --border: rgba(255,255,255,0.09);
+    --accent: #07f468;            /* FC온라인 초록 */
+    --accent-ink: #001a0a;        /* 초록 위 글씨 */
+    --accent-soft: rgba(7,244,104,0.14);
+    --accent-line: rgba(7,244,104,0.45);
+    --warn-bg: #3a2e10;
+    --warn-ink: #f3d58a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--page); color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 24px 16px 64px; }
+  header h1 { margin: 0; font-size: 26px; letter-spacing: -0.02em; }
+  header p { margin: 4px 0 0; color: var(--ink-2); font-size: 14px; }
+  .meta { color: var(--muted); font-size: 13px; margin-top: 6px; }
+
+  .switch-bar {
+    position: sticky; top: 0; z-index: 5; background: var(--page);
+    padding: 14px 0 12px; margin-top: 12px; border-bottom: 1px solid var(--grid);
+  }
+  .switch-label { font-size: 13px; color: var(--ink-2); margin-bottom: 6px; }
+  .seg { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .seg button {
+    font: inherit; font-size: 14px; padding: 10px 6px; border-radius: 10px; cursor: pointer;
+    border: 1px solid #ffffff; background: var(--surface); color: var(--ink);
+  }
+  .seg button small { display: block; font-size: 12px; color: var(--muted); }
+  .seg button:hover { background: #1a1d1a; }
+  .seg button[aria-pressed="true"] {
+    border-color: #ffffff; background: var(--accent); color: var(--accent-ink); font-weight: 700;
+  }
+  .seg button[aria-pressed="true"] small { color: var(--accent-ink); opacity: 0.75; }
+  .seg button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .tabs { display: flex; gap: 6px; margin-top: 10px; overflow-x: auto; }
+  .tabs button {
+    font: inherit; font-size: 15px; font-weight: 650; padding: 9px 16px; border-radius: 999px; cursor: pointer;
+    border: 1px solid #ffffff; background: transparent; color: var(--ink); white-space: nowrap;
+  }
+  .tabs button:hover { background: #1a1d1a; }
+  .tabs button[aria-selected="true"] { background: var(--ink); color: #000; }
+  .tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .tab-note {
+    margin-top: 14px; padding: 12px 16px; border-radius: 12px; background: var(--surface);
+    border: 1px solid var(--grid); color: var(--ink-2); font-size: 13px;
+  }
+  .tab-note:empty { display: none; }
+  .tab-note b { color: var(--ink); }
+  .alt { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .budget { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
+  .budget input {
+    font: inherit; font-size: 18px; font-weight: 700; width: 180px; padding: 8px 12px; border-radius: 10px;
+    border: 1px solid #ffffff; background: var(--surface-2); color: var(--ink);
+  }
+  .budget input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .budget .quick {
+    font: inherit; font-size: 13px; padding: 7px 12px; border-radius: 999px; cursor: pointer;
+    border: 1px solid #ffffff; background: transparent; color: var(--ink);
+  }
+  .budget .quick:hover { background: #1a1d1a; }
+  .combo { border-color: var(--accent) !important; }
+  .combo h3 { margin: 0 0 8px; font-size: 16px; }
+  .combo .sum { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 10px; color: var(--ink-2); font-size: 14px; }
+  .combo .sum b { color: var(--accent); font-size: 20px; }
+  .rec-item.dim { opacity: 0.38; }
+  .rec-item .why { margin: 8px 0 0; padding-left: 18px; color: var(--ink-2); font-size: 13px; }
+  .rec-item .why li { margin: 2px 0; }
+  .over { color: #ff8a8a; font-size: 12px; font-weight: 600; }
+  .chip.tab-web { border-color: #3b82f6; }
+  .chip.tab-fishbread { border-color: #f59e0b; }
+  .chip.tab-keyshop { border-color: #a855f7; }
+  .chip { font-size: 12px; padding: 2px 8px; border-radius: 999px; background: var(--surface-2); color: var(--ink-2); border: 1px solid var(--grid); }
+
+  .list { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 12px; }
+  .card {
+    background: var(--surface); border: 1px solid #ffffff; border-radius: 14px;
+    padding: 16px 18px; transition: box-shadow .15s;
+  }
+  .card:hover { box-shadow: 0 0 0 1px #ffffff; }
+  header h1 .brand { color: var(--accent); }
+  header h1::before {
+    content: ""; display: inline-block; width: 10px; height: 26px; margin-right: 10px; vertical-align: -4px;
+    background: var(--accent); border-radius: 2px; transform: skewX(-12deg);
+  }
+  .card-top { display: grid; grid-template-columns: 40px 1fr auto; gap: 12px; align-items: center; }
+  .rank { font-size: 20px; font-weight: 700; color: var(--accent); text-align: center; line-height: 1.1; }
+  .rank small { display: block; font-size: 11px; font-weight: 500; color: var(--muted); }
+  .name { font-weight: 650; font-size: 16px; }
+  .sub { color: var(--ink-2); font-size: 13px; }
+  .hero { text-align: right; }
+  .hero .num { font-size: 40px; font-weight: 750; letter-spacing: -0.03em; line-height: 1.05; color: var(--accent); }  .hero .unit { font-size: 13px; color: var(--ink-2); }
+  .hero .num-unit { font-size: 18px; font-weight: 650; letter-spacing: 0; }
+  .hero .per-fc { font-size: 17px; color: var(--ink-2); margin-top: 2px; }
+  .hero .per-fc b { color: var(--ink); font-variant-numeric: tabular-nums; }
+  .waiting {
+    display: inline-block; margin-top: 4px; padding: 3px 10px; border-radius: 999px;
+    background: var(--warn-bg); color: var(--warn-ink); font-size: 13px; font-weight: 600;
+  }
+  .range {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    margin-top: 12px; padding: 10px 12px; border-radius: 10px; background: var(--surface-2);
+    font-size: 14px; color: var(--ink-2);
+  }
+  .range .lbl { color: var(--muted); font-size: 12px; width: 100%; }
+  .range b { color: var(--ink); font-variant-numeric: tabular-nums; }
+  .range .track {
+    flex: 1; min-width: 80px; height: 6px; border-radius: 3px;
+    background: linear-gradient(90deg, var(--lo-color), #9b59d0 50%, var(--hi-color));
+    position: relative; margin: 26px 6px 4px;
+  }
+  .range { --lo-color: #3b82f6; --hi-color: #ef4444; }
+  .range .lo b { color: var(--lo-color); }
+  .range .hi b { color: var(--hi-color); }
+  .range .fill { display: none; }
+  .range .ev-dot {
+    position: absolute; top: 50%; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%;
+    background: var(--accent); box-shadow: 0 0 0 2px var(--surface-2), 0 0 10px rgba(7,244,104,0.6);
+  }
+  .range .ev-lbl {
+    position: absolute; bottom: 12px; white-space: nowrap; font-size: 12px; color: var(--ink-2);
+    transform: translateX(-50%);
+  }
+  .range .ev-lbl.left { transform: translateX(-6px); }
+  .range .ev-lbl.right { transform: translateX(calc(-100% + 6px)); }
+  details { margin-top: 12px; border-top: 1px solid var(--grid); padding-top: 10px; }
+  summary {
+    cursor: pointer; color: var(--accent); font-size: 14px; font-weight: 600;
+    display: inline-block; padding: 6px 12px; border: 1px solid #ffffff; border-radius: 8px;
+  }
+  summary:hover { background: #1a1d1a; }
+  summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .tbl-wrap { overflow-x: auto; margin-top: 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { padding: 7px 8px; border-bottom: 1px solid var(--grid); text-align: right; white-space: nowrap; }
+  th { color: var(--ink-2); font-weight: 600; font-size: 12px; }
+  th:first-child, td:first-child { text-align: left; white-space: normal; min-width: 180px; }
+  td { font-variant-numeric: tabular-nums; }
+  td .from { display: block; font-size: 11px; color: var(--muted); }
+  .share { display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
+  .bar { width: 90px; height: 8px; border-radius: 4px; background: var(--grid); overflow: hidden; }
+  .bar i { display: block; height: 100%; background: var(--accent); border-radius: 4px; }
+  tfoot td { font-weight: 650; border-bottom: none; }
+  .note {
+    margin-top: 32px; color: var(--ink-2); font-size: 13px;
+    background: var(--surface); border: 1px solid #ffffff; border-radius: 14px; padding: 4px 18px 14px;
+  }
+  .note h2 { font-size: 15px; color: var(--ink); margin: 16px 0 6px; }
+  .note ul { padding-left: 18px; margin: 4px 0; }
+  .note a { color: var(--accent); }
+  .err { padding: 20px; background: var(--warn-bg); color: var(--warn-ink); border-radius: 12px; }
+  @media (max-width: 600px) {
+    .card-top { grid-template-columns: 28px 1fr; }
+    .hero { grid-column: 1 / -1; text-align: left; padding-left: 40px; }
+    .hero .num { font-size: 34px; }
+    .seg { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>FC온라인 <span class="brand">현질효율판</span></h1>
+    <p>넥슨 웹샵 확률형 상품과 이벤트 상점에서 현질했을 때, <b>1 FC당 기대 BP</b>가 얼마인지 비교합니다.</p>
+    <div class="meta" id="meta">불러오는 중…</div>
+  </header>
+
+  <div class="switch-bar">
+    <div class="switch-label">선수 판매 수수료 할인 (선택한 조건으로 다시 계산됩니다. 선수팩의 비율이 높을수록 수수료의 영향이 커집니다.)</div>
+    <div class="seg" role="group" aria-label="수수료 할인 선택" id="seg">
+      <button data-d="0" aria-pressed="true">할인 없음<small>수수료 40%</small></button>
+      <button data-d="0.2" aria-pressed="false">TOP CLASS<small>수수료 32%</small></button>
+      <button data-d="0.3" aria-pressed="false">PC방<small>수수료 28%</small></button>
+      <button data-d="0.5" aria-pressed="false">PC방+TOP CLASS<small>수수료 20%</small></button>
+    </div>
+    <div class="tabs" role="tablist" aria-label="상점 선택" id="tabs">
+      <button role="tab" data-tab="web" aria-selected="true">웹 상점</button>
+      <button role="tab" data-tab="fishbread" aria-selected="false">붕어빵 속 SSS</button>
+      <button role="tab" data-tab="keyshop" aria-selected="false">26UP 프리미엄 열쇠 상점</button>
+      <button role="tab" data-tab="rec" aria-selected="false">예산별 추천</button>
+    </div>
+  </div>
+
+  <div class="tab-note" id="tabnote"></div>
+  <ol class="list" id="list"></ol>
+
+  <section class="note">
+    <h2>계산 방법</h2>
+    <ul>
+      <li>상품 기대 BP = Σ(보상 확률 × 보상 1회의 실수령 기대 BP). 상자 안에 또 상자가 있으면 안쪽부터 계산합니다.</li>
+      <li>BP 카드는 수수료 없이 액면가 그대로 계산합니다.</li>
+      <li>선수팩은 확률표의 "기준가 TOP N" 순위별 확률에 데이터센터 기준가를 순위대로 대입합니다. 실수령 = 낙찰가 × (1 − 0.4 × (1 − 할인율))</li>
+      <li>1 FC당 BP = 상품 기대 BP ÷ 상품 FC 가격. 함께 주는 보너스 팩도 포함합니다.</li>
+      <li>흥부네 하우스의 "박씨"는 2개를 모으면 "흥부의 대박" 1개가 되므로, 1개를 대박 상자의 절반 가치로 계산합니다.</li>
+      <li>BP로 바꿀 수 없는 상품(예: 시뮬레이션권)은 제외합니다.</li>
+      <li>최고/최저는 상품 1개를 깠을 때 나올 수 있는 가장 좋은/나쁜 결과의 실수령 BP입니다(보너스 팩 포함). 최고값은 기준가 1위 선수가 나오는 경우라 확률이 매우 낮습니다. 박씨처럼 모아서 교환하는 재료는 기대값으로 셉니다.</li>
+    </ul>
+    <h2>데이터 출처</h2>
+    <ul>
+      <li>상품·가격: <a href="https://shop.fconline.nexon.com" rel="noopener">FC온라인 웹샵</a></li>
+      <li>확률: <a href="https://iteminfo.nexon.com/probability/fco" rel="noopener">넥슨 확률형 아이템 정보</a></li>
+      <li>선수 기준가: <a href="https://fconline.nexon.com/datacenter" rel="noopener">FC온라인 데이터센터</a></li>
+    </ul>
+    <p>기대값은 평균입니다. 실제 개봉 결과는 운에 따라 크게 달라지며, 기준가는 개봉 시점에 따라 바뀔 수 있습니다. 넥슨과 관계없는 개인 계산 사이트입니다.</p>
+    <p class="links"><a href="guide.html">계산 방법 자세히 보기</a> · <a href="about.html">사이트 소개</a> · <a href="privacy.html">개인정보처리방침</a></p>
+  </section>
+</div>
+
+<script id="fc-data">
+/*DATA-START*/window.FC_DATA = {"updated_at":"2026-11-06T01:15+09:00","probability_fetched":"2026-11-06","products":[{"pid":44732,"name":"[10~11강 20%] 10~11강팩 or BP 패키지","price_fc":9900,"period":"2026.10.29(목) 08:00 ~ 11.26(목) 08:00","limit":null,"limit_text":"","status":"ok","reason":null,"components":[{"name":"[10~11강 20%] 10~11강팩 or BP 상자","count":1},{"name":"[동일확률] 26UP Top Price 1435 (1~7강)","count":3}],"rows":[{"name":"26UP Top Price 95 (11강, 114+)","from":"[10~11강 20%] 10~11강팩 or BP 상자","prob":0.019924,"amount":1,"w":0.019924,"bp":0.0,"player":1371552563.7037995},{"name":"UC Top Price 110 (11강, 117+)","from":"[10~11강 20%] 10~11강팩 or BP 상자","prob":0.0051719999999999995,"amount":1,"w":0.0051719999999999995,"bp":0.0,"player":944210298.9080772},{"name":"SPT, 26FSL 포함 Top Price 630 (11강, 114+)","from":"[10~11강 20%] 10~11강팩 or BP 상자","prob":0.1,"amount":1,"w":0.1,"bp":0.0,"player":1012138963.4076139},{"name":"UC Top Price 60 (10강, 117+)","from":"[10~11강 20%] 10~11강팩 or BP 상자","prob":0.024058000000000003,"amount":1,"w":0.024058000000000003,"bp":0.0,"player":735857493.4379516},{"name":"26UP 포함 Top Price 270 (10강, 114+)","from":"[10~11강 20%] 10~11강팩 or BP 상자","prob":0.050846,"amount":1,"w":0.050846,"bp":0.0,"player":889677534.3935307},{"name":"행운의 BP 카드 (400만~800만)","from":"[10~11강 20%] 10~11강팩 or BP 상자","prob":0.8,"amount":80,"w":64.0,"bp":4810000.0,"player":0.0},{"name":"[동일확률] 26UP Top Price 1435 (1~7강)","from":null,"prob":1.0,"amount":3,"w":3,"bp":0.0,"player":7677111.289198599}],"range":{"none":[240062460.0,183552000000.0],"top":[272070788.0,208025599999.99997],"pc":[288074952.0,220262400000.0],"pc_top":[320083280.0,244736000000.0]}},{"pid":44733,"name":"26UP UPGRADE 패키지","price_fc":7500,"period":"2026.10.29(목) 08:00 ~ 11.26(목) 08:00","limit":null,"limit_text":"","status":"ok","reason":null,"components":[{"name":"26UP UPGRADE 상자","count":1},{"name":"[동일확률] 26UP Top Price 1435 (1~7강)","count":3},{"name":"26PL Top Price 5500 (1~11강)","count":2}],"rows":[{"name":"[TRIPLE UP] 26UP Top Price 116 (11강, 114+)","from":"26UP UPGRADE 상자","prob":0.01024,"amount":1,"w":0.01024,"bp":0.0,"player":1202902946.3288264},{"name":"[TRIPLE UP] UC Top Price 111 (11강, 117+)","from":"26UP UPGRADE 상자","prob":0.00392,"amount":1,"w":0.00392,"bp":0.0,"player":845290159.0858371},{"name":"[DOUBLE UP] SPT, 26FSL 포함 Top Price 880 (11강, 114+)","from":"26UP UPGRADE 상자","prob":0.07675799999999999,"amount":1,"w":0.07675799999999999,"bp":0.0,"player":721440472.0491587},{"name":"[DOUBLE UP] 26UP 포함 Top Price 490 (10강, 110+)","from":"26UP UPGRADE 상자","prob":0.08150299999999999,"amount":1,"w":0.08150299999999999,"bp":0.0,"player":536222498.2623187},{"name":"[DOUBLE UP] 26UP 포함 Top Price 125 (9강, 110+)","from":"26UP UPGRADE 상자","prob":0.091,"amount":1,"w":0.091,"bp":0.0,"player":666501794.3047289},{"name":"[DOUBLE UP] 26UP 포함 Top Price 160 (8~9강, 110+)","from":"26UP UPGRADE 상자","prob":0.160379,"amount":1,"w":0.160379,"bp":0.0,"player":704781238.9304781},{"name":"[DOUBLE UP] 26UP 포함 Top Price 80 (8강, 110+)","from":"26UP UPGRADE 상자","prob":0.0762,"amount":1,"w":0.0762,"bp":0.0,"player":643131720.248634},{"name":"[UP] BP 카드 2.3억","from":"26UP UPGRADE 상자","prob":0.5,"amount":1,"w":0.5,"bp":230000000.0,"player":0.0},{"name":"[동일확률] 26UP Top Price 1435 (1~7강)","from":null,"prob":1.0,"amount":3,"w":3,"bp":0.0,"player":7677111.289198599},{"name":"26PL Top Price 5500 (1~11강)","from":null,"prob":1.0,"amount":2,"w":2,"bp":0.0,"player":117747.87479740134}],"range":{"none":[182463660.0,184452000000.0],"top":[206792147.99999997,209045599999.99997],"pc":[218956392.0,221342400000.0],"pc_top":[230084880.0,245936000000.0]}},{"pid":44730,"name":"[확정 에디션] [26UP 11강 기회] 10~11강 확정 패키지","price_fc":14900,"period":"2026.10.29(목) 08:00 ~ 11.26(목) 08:00","limit":3,"limit_text":"구매제한 계정 3회","status":"ok","reason":null,"components":[{"name":"[26UP 11강 기회] 10~11강 확정 상자","count":1},{"name":"[동일확률] 26UP Top Price 1435 (1~7강)","count":3}],"rows":[{"name":"26UP Top Price 90 (11강, 115+)","from":"[26UP 11강 기회] 10~11강 확정 상자","prob":0.020354999999999998,"amount":1,"w":0.020354999999999998,"bp":0.0,"player":1338858773.902869},{"name":"UC Top Price 106 (11강, 118+)","from":"[26UP 11강 기회] 10~11강 확정 상자","prob":0.007788000000000001,"amount":1,"w":0.007788000000000001,"bp":0.0,"player":1004393014.5653884},{"name":"SPT, 26FSL 포함 Top Price 100 (11강)","from":"[26UP 11강 기회] 10~11강 확정 상자","prob":0.03,"amount":1,"w":0.03,"bp":0.0,"player":1092232543.8635652},{"name":"WG 포함 Top Price 460 (11강, 115+)","from":"[26UP 11강 기회] 10~11강 확정 상자","prob":0.120505,"amount":1,"w":0.120505,"bp":0.0,"player":1040987890.6764784},{"name":"26UP, UC 포함 Top Price 310 (10강, 115+)","from":"[26UP 11강 기회] 10~11강 확정 상자","prob":0.821352,"amount":1,"w":0.821352,"bp":0.0,"player":814382160.4323419},{"name":"[동일확률] 26UP Top Price 1435 (1~7강)","from":null,"prob":1.0,"amount":3,"w":3,"bp":0.0,"player":7677111.289198599}],"range":{"none":[251462460.0,183552000000.0],"top":[284990788.0,208025599999.99997],"pc":[301754952.0,220262400000.0],"pc_top":[335283280.0,244736000000.0]}},{"pid":44734,"name":"[박씨 2개 = 대박] 흥부네 26UP 하우스 X 3","price_fc":5500,"period":"2026.10.29(목) 08:00 ~ 11.26(목) 08:00","limit":null,"limit_text":"","status":"ok","reason":null,"components":[{"name":"[박씨 2개 = 대박] 흥부네 26UP 하우스","count":3}],"rows":[{"name":"26UP Top Price 160 (11강)","from":"[박씨 2개 = 대박] 흥부네 26UP 하우스","prob":0.0025009999999999998,"amount":3,"w":0.007502999999999999,"bp":0.0,"player":482976289.50954443},{"name":"UC, SPT, 26FSL Top Price 245 (11강)","from":"[박씨 2개 = 대박] 흥부네 26UP 하우스","prob":0.009250000000000001,"amount":3,"w":0.027750000000000004,"bp":0.0,"player":388767996.1886974},{"name":"WG 포함 Top Price 1600 (11강, 104+)","from":"[박씨 2개 = 대박] 흥부네 26UP 하우스","prob":0.010988,"amount":3,"w":0.032964,"bp":0.0,"player":175183644.77012292},{"name":"26UP Top Price 60 (10강)","from":"[박씨 2개 = 대박] 흥부네 26UP 하우스","prob":0.005738,"amount":3,"w":0.017214,"bp":0.0,"player":633722591.7739716},{"name":"SPT, 26FSL 포함 Top Price 770 (10강, 108+)","from":"[박씨 2개 = 대박] 흥부네 26UP 하우스","prob":0.0326,"amount":3,"w":0.0978,"bp":0.0,"player":166187289.34246132},{"name":"SPT, 26FSL 포함 Top Price 205 (9강, 108+)","from":"[박씨 2개 = 대박] 흥부네 26UP 하우스","prob":0.06,"amount":3,"w":0.18,"bp":0.0,"player":157196021.52974138},{"name":"SPT, 26FSL 포함 Top Price 105 (8강, 108+)","from":"[박씨 2개 = 대박] 흥부네 26UP 하우스","prob":0.07,"amount":3,"w":0.21000000000000002,"bp":0.0,"player":148048509.4438309},{"name":"26UP Top Price 110 (8~9강)","from":"[박씨 2개 = 대박] 흥부네 26UP 하우스","prob":0.011000000000000001,"amount":6,"w":0.066,"bp":0.0,"player":459605587.463914},{"name":"SPT, 26FSL 포함 Top Price 120 (1~7강)","from":"[박씨 2개 = 대박] 흥부네 26UP 하우스","prob":0.19792300000000002,"amount":9,"w":1.781307,"bp":0.0,"player":26433756.60593593},{"name":"제비가 물어다준 박씨 (박씨 2개=대박)(~26.12.03 점검 전)","from":"[박씨 2개 = 대박] 흥부네 26UP 하우스","prob":0.6,"amount":3,"w":1.7999999999999998,"bp":0.0,"player":76731220.65114368}],"range":{"none":[99900000.0,541800000000.0],"top":[113220000.0,614039999999.9999],"pc":[119880000.0,650160000000.0],"pc_top":[133200000.0,722400000000.0]}},{"pid":44735,"name":"[박씨 2개 = 대박] 흥부네 26UP 하우스","price_fc":1900,"period":"2026.10.29(목) 08:00 ~ 11.26(목) 08:00","limit":null,"limit_text":"","status":"ok","reason":null,"components":[{"name":"[박씨 2개 = 대박] 흥부네 26UP 하우스","count":1}],"rows":[{"name":"26UP Top Price 160 (11강)","from":"[박씨 2개 = 대박] 흥부네 26UP 하우스","prob":0.0025009999999999998,"amount":1,"w":0.0025009999999999998,"bp":0.0,"player":482976289.50954443},{"name":"UC, SPT, 26FSL Top Price 245 (11강)","from":"[박씨 2개 = 대박] 흥부네 26UP 하우스","prob":0.009250000000000001,"amount":1,"w":0.009250000000000001,"bp":0.0,"player":388767996.1886974},{"name":"WG 포함 Top Price 1600 (11강, 104+)","from":"[박씨 2개 = 대박] 흥부네 26UP 하우스","prob":0.010988,"amount":1,"w":0.010988,"bp":0.0,"player":175183644.77012292},{"name":"26UP Top Price 60 (10강)","from":"[박씨 2개 = 대박] 흥부네 26UP 하우스","prob":0.005738,"amount":1,"w":0.005738,"bp":0.0,"player":633722591.7739716},{"name":"SPT, 26FSL 포함 Top Price 770 (10강, 108+)","from":"[박씨 2개 = 대박] 흥부네 26UP 하우스","prob":0.0326,"amount":1,"w":0.0326,"bp":0.0,"player":166187289.34246132},{"name":"SPT, 26FSL 포함 Top Price 205 (9강, 108+)","from":"[박씨 2개 = 대박] 흥부네 26UP 하우스","prob":0.06,"amount":1,"w":0.06,"bp":0.0,"player":157196021.52974138},{"name":"SPT, 26FSL 포함 Top Price 105 (8강, 108+)","from":"[박씨 2개 = 대박] 흥부네 26UP 하우스","prob":0.07,"amount":1,"w":0.07,"bp":0.0,"player":148048509.4438309},{"name":"26UP Top Price 110 (8~9강)","from":"[박씨 2개 = 대박] 흥부네 26UP 하우스","prob":0.011000000000000001,"amount":2,"w":0.022000000000000002,"bp":0.0,"player":459605587.463914},{"name":"SPT, 26FSL 포함 Top Price 120 (1~7강)","from":"[박씨 2개 = 대박] 흥부네 26UP 하우스","prob":0.19792300000000002,"amount":3,"w":0.593769,"bp":0.0,"player":26433756.60593593},{"name":"제비가 물어다준 박씨 (박씨 2개=대박)(~26.12.03 점검 전)","from":"[박씨 2개 = 대박] 흥부네 26UP 하우스","prob":0.6,"amount":1,"w":0.6,"bp":0.0,"player":76731220.65114368}],"range":{"none":[33300000.0,180600000000.0],"top":[37740000.0,204679999999.99997],"pc":[39960000.0,216720000000.0],"pc_top":[44400000.0,240800000000.0]}},{"pid":44736,"name":"SPT, 26FSL 포함 Top Price 800 (5~9강, 105+)","price_fc":990,"period":"2026.10.29(목) 08:00 ~ 11.26(목) 08:00","limit":1,"limit_text":"구매제한 계정 1회","status":"ok","reason":null,"components":[{"name":"SPT, 26FSL 포함 Top Price 800 (5~9강, 105+)","count":1}],"rows":[{"name":"SPT, 26FSL 포함 Top Price 800 (5~9강, 105+)","from":null,"prob":1.0,"amount":1,"w":1,"bp":0.0,"player":41132368.52442608}],"range":{"none":[12120000.0,12180000000.0],"top":[13735999.999999998,13803999999.999998],"pc":[14544000.0,14616000000.0],"pc_top":[16160000.0,16240000000.0]}},{"pid":48222,"name":"[동일확률] SPT 포함 Top Price 6530 (1강)","price_fc":100,"period":"2026.09.01(화) 00:00 ~ 01.01(금) 00:00","limit":50,"limit_text":"구매제한 월50회","status":"ok","reason":null,"components":[{"name":"[동일확률] SPT 포함 Top Price 6530 (1강)","count":1}],"rows":[{"name":"[동일확률] SPT 포함 Top Price 6530 (1강)","from":null,"prob":1.0,"amount":1,"w":1,"bp":0.0,"player":169812.56967840798}],"range":{"none":[600.0,420600000.0],"top":[679.9999999999999,476679999.99999994],"pc":[720.0,504720000.0],"pc_top":[800.0,560800000.0]}},{"pid":48227,"name":"BP 카드 1만","price_fc":100,"period":"2026.08.27(목) 08:00 ~","limit":50,"limit_text":"구매제한 월50회","status":"ok","reason":null,"components":[{"name":"BP 카드 1만","count":1}],"rows":[{"name":"BP 카드 1만","from":null,"prob":1.0,"amount":1,"w":1,"bp":10000.0,"player":0.0}],"range":{"none":[10000,10000],"top":[10000,10000],"pc":[10000,10000],"pc_top":[10000,10000]}}],"skipped":[{"name":"시뮬레이션권 상자","reason":"BP로 환산할 수 없는 상품"}],"tabs":{"fishbread":{"cards":[{"name":"스페셜 게임 참여권 1개","group":"스페셜 게임","price_fc":2100,"count":1,"period":"2026.11.05(목) ~ 12.03(목) 점검 전","per":{"none":{"ev":122716797.379085,"per_fc":58436.57018051667,"per_fc_alt":52209.912536443146,"per_ticket":122716797.379085,"per_ticket_alt":109640816.3265306,"lucky7":20057142.85714286,"draws_per_board":17.0398,"grades":[{"grade":"SSS","cells":1,"value":708000000.0,"choice":"코인 15개"},{"grade":"SS","cells":2,"value":236000000.0,"choice":"코인 5개"},{"grade":"S","cells":6,"value":141600000.0,"choice":"코인 3개"},{"grade":"A","cells":10,"value":94400000.0,"choice":"코인 2개"},{"grade":"B","cells":30,"value":47200000.0,"choice":"코인 1개"}],"coin_value":47200000.0},"top":{"ev":123735861.76970688,"per_fc":58921.838937955654,"per_fc_alt":52467.15758262101,"per_ticket":123735861.76970688,"per_ticket_alt":110181030.92350411,"lucky7":20057142.85714286,"draws_per_board":17.1782,"grades":[{"grade":"SSS","cells":1,"value":734470515.2517012,"choice":"[스페셜SSS][26UP 11강 기회] 상자"},{"grade":"SS","cells":2,"value":236000000.0,"choice":"코인 5개"},{"grade":"S","cells":6,"value":141600000.0,"choice":"코인 3개"},{"grade":"A","cells":10,"value":94400000.0,"choice":"코인 2개"},{"grade":"B","cells":30,"value":47200000.0,"choice":"코인 1개"}],"coin_value":47200000.0},"pc":{"ev":126710591.71773347,"per_fc":60338.37700844451,"per_fc_alt":53502.71764017855,"per_ticket":126710591.71773347,"per_ticket_alt":112355707.04437494,"lucky7":20057142.85714286,"draws_per_board":17.2868,"grades":[{"grade":"SSS","cells":1,"value":777674663.2076837,"choice":"[스페셜SSS][26UP 11강 기회] 상자"},{"grade":"SS","cells":2,"value":241856906.216859,"choice":"[스페셜SS][26UP 10강 기회] 상자"},{"grade":"S","cells":6,"value":143878286.89116043,"choice":"코인 3개"},{"grade":"A","cells":10,"value":95918857.92744029,"choice":"코인 2개"},{"grade":"B","cells":30,"value":47959428.96372014,"choice":"코인 1개"}],"coin_value":47959428.96372014},"pc_top":{"ev":138984612.27571023,"per_fc":66183.14870271916,"per_fc_alt":58574.840999447435,"per_ticket":138984612.27571023,"per_ticket_alt":123007166.09883961,"lucky7":22175032.497106038,"draws_per_board":17.2934,"grades":[{"grade":"SSS","cells":1,"value":864082959.1196486,"choice":"[스페셜SSS][26UP 11강 기회] 상자"},{"grade":"SS","cells":2,"value":268729895.79651004,"choice":"[스페셜SS][26UP 10강 기회] 상자"},{"grade":"S","cells":6,"value":156142579.22524747,"choice":"코인 3개"},{"grade":"A","cells":10,"value":104095052.81683165,"choice":"코인 2개"},{"grade":"B","cells":30,"value":52047526.408415824,"choice":"코인 1개"}],"coin_value":52047526.408415824}}},{"name":"[특별할인] 스페셜 게임 참여권 1개 (10회 제한)","group":"스페셜 게임","price_fc":1900,"count":1,"period":"2026.11.05(목) ~ 12.03(목) 점검 전","per":{"none":{"ev":122716797.379085,"per_fc":64587.788094255266,"per_fc_alt":57705.69280343716,"per_ticket":122716797.379085,"per_ticket_alt":109640816.3265306,"lucky7":20057142.85714286,"draws_per_board":17.0398,"grades":[{"grade":"SSS","cells":1,"value":708000000.0,"choice":"코인 15개"},{"grade":"SS","cells":2,"value":236000000.0,"choice":"코인 5개"},{"grade":"S","cells":6,"value":141600000.0,"choice":"코인 3개"},{"grade":"A","cells":10,"value":94400000.0,"choice":"코인 2개"},{"grade":"B","cells":30,"value":47200000.0,"choice":"코인 1개"}],"coin_value":47200000.0},"top":{"ev":123735861.76970688,"per_fc":65124.13777352993,"per_fc_alt":57990.016275528484,"per_ticket":123735861.76970688,"per_ticket_alt":110181030.92350411,"lucky7":20057142.85714286,"draws_per_board":17.1782,"grades":[{"grade":"SSS","cells":1,"value":734470515.2517012,"choice":"[스페셜SSS][26UP 11강 기회] 상자"},{"grade":"SS","cells":2,"value":236000000.0,"choice":"코인 5개"},{"grade":"S","cells":6,"value":141600000.0,"choice":"코인 3개"},{"grade":"A","cells":10,"value":94400000.0,"choice":"코인 2개"},{"grade":"B","cells":30,"value":47200000.0,"choice":"코인 1개"}],"coin_value":47200000.0},"pc":{"ev":126710591.71773347,"per_fc":66689.78511459657,"per_fc_alt":59134.58265493418,"per_ticket":126710591.71773347,"per_ticket_alt":112355707.04437494,"lucky7":20057142.85714286,"draws_per_board":17.2868,"grades":[{"grade":"SSS","cells":1,"value":777674663.2076837,"choice":"[스페셜SSS][26UP 11강 기회] 상자"},{"grade":"SS","cells":2,"value":241856906.216859,"choice":"[스페셜SS][26UP 10강 기회] 상자"},{"grade":"S","cells":6,"value":143878286.89116043,"choice":"코인 3개"},{"grade":"A","cells":10,"value":95918857.92744029,"choice":"코인 2개"},{"grade":"B","cells":30,"value":47959428.96372014,"choice":"코인 1개"}],"coin_value":47959428.96372014},"pc_top":{"ev":138984612.27571023,"per_fc":73149.79593458433,"per_fc_alt":64740.613736231375,"per_ticket":138984612.27571023,"per_ticket_alt":123007166.09883961,"lucky7":22175032.497106038,"draws_per_board":17.2934,"grades":[{"grade":"SSS","cells":1,"value":864082959.1196486,"choice":"[스페셜SSS][26UP 11강 기회] 상자"},{"grade":"SS","cells":2,"value":268729895.79651004,"choice":"[스페셜SS][26UP 10강 기회] 상자"},{"grade":"S","cells":6,"value":156142579.22524747,"choice":"코인 3개"},{"grade":"A","cells":10,"value":104095052.81683165,"choice":"코인 2개"},{"grade":"B","cells":30,"value":52047526.408415824,"choice":"코인 1개"}],"coin_value":52047526.408415824}}},{"name":"스페셜 게임 참여권 4개 묶음","group":"스페셜 게임","price_fc":7500,"count":4,"period":"2026.11.05(목) ~ 12.03(목) 점검 전","per":{"none":{"ev":490867189.51634,"per_fc":65448.95860217867,"per_fc_alt":58475.102040816324,"per_ticket":122716797.379085,"per_ticket_alt":109640816.3265306,"lucky7":20057142.85714286,"draws_per_board":17.0398,"grades":[{"grade":"SSS","cells":1,"value":708000000.0,"choice":"코인 15개"},{"grade":"SS","cells":2,"value":236000000.0,"choice":"코인 5개"},{"grade":"S","cells":6,"value":141600000.0,"choice":"코인 3개"},{"grade":"A","cells":10,"value":94400000.0,"choice":"코인 2개"},{"grade":"B","cells":30,"value":47200000.0,"choice":"코인 1개"}],"coin_value":47200000.0},"top":{"ev":494943447.0788275,"per_fc":65992.45961051033,"per_fc_alt":58763.216492535525,"per_ticket":123735861.76970688,"per_ticket_alt":110181030.92350411,"lucky7":20057142.85714286,"draws_per_board":17.1782,"grades":[{"grade":"SSS","cells":1,"value":734470515.2517012,"choice":"[스페셜SSS][26UP 11강 기회] 상자"},{"grade":"SS","cells":2,"value":236000000.0,"choice":"코인 5개"},{"grade":"S","cells":6,"value":141600000.0,"choice":"코인 3개"},{"grade":"A","cells":10,"value":94400000.0,"choice":"코인 2개"},{"grade":"B","cells":30,"value":47200000.0,"choice":"코인 1개"}],"coin_value":47200000.0},"pc":{"ev":506842366.8709339,"per_fc":67578.98224945785,"per_fc_alt":59923.04375699997,"per_ticket":126710591.71773347,"per_ticket_alt":112355707.04437494,"lucky7":20057142.85714286,"draws_per_board":17.2868,"grades":[{"grade":"SSS","cells":1,"value":777674663.2076837,"choice":"[스페셜SSS][26UP 11강 기회] 상자"},{"grade":"SS","cells":2,"value":241856906.216859,"choice":"[스페셜SS][26UP 10강 기회] 상자"},{"grade":"S","cells":6,"value":143878286.89116043,"choice":"코인 3개"},{"grade":"A","cells":10,"value":95918857.92744029,"choice":"코인 2개"},{"grade":"B","cells":30,"value":47959428.96372014,"choice":"코인 1개"}],"coin_value":47959428.96372014},"pc_top":{"ev":555938449.1028409,"per_fc":74125.12654704545,"per_fc_alt":65603.82191938112,"per_ticket":138984612.27571023,"per_ticket_alt":123007166.09883961,"lucky7":22175032.497106038,"draws_per_board":17.2934,"grades":[{"grade":"SSS","cells":1,"value":864082959.1196486,"choice":"[스페셜SSS][26UP 11강 기회] 상자"},{"grade":"SS","cells":2,"value":268729895.79651004,"choice":"[스페셜SS][26UP 10강 기회] 상자"},{"grade":"S","cells":6,"value":156142579.22524747,"choice":"코인 3개"},{"grade":"A","cells":10,"value":104095052.81683165,"choice":"코인 2개"},{"grade":"B","cells":30,"value":52047526.408415824,"choice":"코인 1개"}],"coin_value":52047526.408415824}}},{"name":"스페셜 게임 참여권 8개 묶음","group":"스페셜 게임","price_fc":14900,"count":8,"period":"2026.11.05(목) ~ 12.03(목) 점검 전","per":{"none":{"ev":981734379.03268,"per_fc":65888.21335789798,"per_fc_alt":58867.55239008355,"per_ticket":122716797.379085,"per_ticket_alt":109640816.3265306,"lucky7":20057142.85714286,"draws_per_board":17.0398,"grades":[{"grade":"SSS","cells":1,"value":708000000.0,"choice":"코인 15개"},{"grade":"SS","cells":2,"value":236000000.0,"choice":"코인 5개"},{"grade":"S","cells":6,"value":141600000.0,"choice":"코인 3개"},{"grade":"A","cells":10,"value":94400000.0,"choice":"코인 2개"},{"grade":"B","cells":30,"value":47200000.0,"choice":"코인 1개"}],"coin_value":47200000.0},"top":{"ev":989886894.157655,"per_fc":66435.3620240037,"per_fc_alt":59157.600495841136,"per_ticket":123735861.76970688,"per_ticket_alt":110181030.92350411,"lucky7":20057142.85714286,"draws_per_board":17.1782,"grades":[{"grade":"SSS","cells":1,"value":734470515.2517012,"choice":"[스페셜SSS][26UP 11강 기회] 상자"},{"grade":"SS","cells":2,"value":236000000.0,"choice":"코인 5개"},{"grade":"S","cells":6,"value":141600000.0,"choice":"코인 3개"},{"grade":"A","cells":10,"value":94400000.0,"choice":"코인 2개"},{"grade":"B","cells":30,"value":47200000.0,"choice":"코인 1개"}],"coin_value":47200000.0},"pc":{"ev":1013684733.7418678,"per_fc":68032.53246589717,"per_fc_alt":60325.21183590601,"per_ticket":126710591.71773347,"per_ticket_alt":112355707.04437494,"lucky7":20057142.85714286,"draws_per_board":17.2868,"grades":[{"grade":"SSS","cells":1,"value":777674663.2076837,"choice":"[스페셜SSS][26UP 11강 기회] 상자"},{"grade":"SS","cells":2,"value":241856906.216859,"choice":"[스페셜SS][26UP 10강 기회] 상자"},{"grade":"S","cells":6,"value":143878286.89116043,"choice":"코인 3개"},{"grade":"A","cells":10,"value":95918857.92744029,"choice":"코인 2개"},{"grade":"B","cells":30,"value":47959428.96372014,"choice":"코인 1개"}],"coin_value":47959428.96372014},"pc_top":{"ev":1111876898.2056818,"per_fc":74622.610617831,"per_fc_alt":66044.1160262226,"per_ticket":138984612.27571023,"per_ticket_alt":123007166.09883961,"lucky7":22175032.497106038,"draws_per_board":17.2934,"grades":[{"grade":"SSS","cells":1,"value":864082959.1196486,"choice":"[스페셜SSS][26UP 11강 기회] 상자"},{"grade":"SS","cells":2,"value":268729895.79651004,"choice":"[스페셜SS][26UP 10강 기회] 상자"},{"grade":"S","cells":6,"value":156142579.22524747,"choice":"코인 3개"},{"grade":"A","cells":10,"value":104095052.81683165,"choice":"코인 2개"},{"grade":"B","cells":30,"value":52047526.408415824,"choice":"코인 1개"}],"coin_value":52047526.408415824}}},{"name":"일반 게임 참여권 1개","group":"일반 게임","price_fc":990,"count":1,"period":"2026.11.05(목) ~ 12.03(목) 점검 전","per":{"none":{"ev":56590631.568431854,"per_fc":57162.25410952712,"per_fc_alt":50191.713048855905,"per_ticket":56590631.568431854,"per_ticket_alt":49689795.91836735,"lucky7":0.0,"draws_per_board":12.1436,"grades":[{"grade":"SSS","cells":9,"value":171600000.0,"choice":"[일반SSS] 행운의 BP 카드 (1.4억~2.8억)"},{"grade":"A","cells":40,"value":22260000.0,"choice":"[일반A] 행운의 BP 카드 (1800만~3600만)"}],"coin_value":47200000.0},"top":{"ev":56590631.568431854,"per_fc":57162.25410952712,"per_fc_alt":50191.713048855905,"per_ticket":56590631.568431854,"per_ticket_alt":49689795.91836735,"lucky7":0.0,"draws_per_board":12.1436,"grades":[{"grade":"SSS","cells":9,"value":171600000.0,"choice":"[일반SSS] 행운의 BP 카드 (1.4억~2.8억)"},{"grade":"A","cells":40,"value":22260000.0,"choice":"[일반A] 행운의 BP 카드 (1800만~3600만)"}],"coin_value":47200000.0},"pc":{"ev":56590631.568431854,"per_fc":57162.25410952712,"per_fc_alt":50191.713048855905,"per_ticket":56590631.568431854,"per_ticket_alt":49689795.91836735,"lucky7":0.0,"draws_per_board":12.1436,"grades":[{"grade":"SSS","cells":9,"value":171600000.0,"choice":"[일반SSS] 행운의 BP 카드 (1.4억~2.8억)"},{"grade":"A","cells":40,"value":22260000.0,"choice":"[일반A] 행운의 BP 카드 (1800만~3600만)"}],"coin_value":47959428.96372014},"pc_top":{"ev":59731901.73488471,"per_fc":60335.25427766132,"per_fc_alt":52726.90518149635,"per_ticket":59731901.73488471,"per_ticket_alt":52199636.129681386,"lucky7":0.0,"draws_per_board":12.1436,"grades":[{"grade":"SSS","cells":9,"value":185264685.59493196,"choice":"[일반SSS][26UP 11강 기회] 상자"},{"grade":"A","cells":40,"value":22260000.0,"choice":"[일반A] 행운의 BP 카드 (1800만~3600만)"}],"coin_value":52047526.408415824}}},{"name":"일반 게임 참여권 5개 묶음","group":"일반 게임","price_fc":4950,"count":5,"period":"2026.11.05(목) ~ 12.03(목) 점검 전","per":{"none":{"ev":282953157.8421593,"per_fc":57162.25410952712,"per_fc_alt":50191.71304885591,"per_ticket":56590631.568431854,"per_ticket_alt":49689795.91836735,"lucky7":0.0,"draws_per_board":12.1436,"grades":[{"grade":"SSS","cells":9,"value":171600000.0,"choice":"[일반SSS] 행운의 BP 카드 (1.4억~2.8억)"},{"grade":"A","cells":40,"value":22260000.0,"choice":"[일반A] 행운의 BP 카드 (1800만~3600만)"}],"coin_value":47200000.0},"top":{"ev":282953157.8421593,"per_fc":57162.25410952712,"per_fc_alt":50191.71304885591,"per_ticket":56590631.568431854,"per_ticket_alt":49689795.91836735,"lucky7":0.0,"draws_per_board":12.1436,"grades":[{"grade":"SSS","cells":9,"value":171600000.0,"choice":"[일반SSS] 행운의 BP 카드 (1.4억~2.8억)"},{"grade":"A","cells":40,"value":22260000.0,"choice":"[일반A] 행운의 BP 카드 (1800만~3600만)"}],"coin_value":47200000.0},"pc":{"ev":282953157.8421593,"per_fc":57162.25410952712,"per_fc_alt":50191.71304885591,"per_ticket":56590631.568431854,"per_ticket_alt":49689795.91836735,"lucky7":0.0,"draws_per_board":12.1436,"grades":[{"grade":"SSS","cells":9,"value":171600000.0,"choice":"[일반SSS] 행운의 BP 카드 (1.4억~2.8억)"},{"grade":"A","cells":40,"value":22260000.0,"choice":"[일반A] 행운의 BP 카드 (1800만~3600만)"}],"coin_value":47959428.96372014},"pc_top":{"ev":298659508.6744236,"per_fc":60335.254277661326,"per_fc_alt":52726.905181496346,"per_ticket":59731901.73488471,"per_ticket_alt":52199636.129681386,"lucky7":0.0,"draws_per_board":12.1436,"grades":[{"grade":"SSS","cells":9,"value":185264685.59493196,"choice":"[일반SSS][26UP 11강 기회] 상자"},{"grade":"A","cells":40,"value":22260000.0,"choice":"[일반A] 행운의 BP 카드 (1800만~3600만)"}],"coin_value":52047526.408415824}}}],"bonus_coins":{"황금 붕어빵 상자":14.700000000000001,"[선수팩 80%] 팥 붕어빵 상자":2.94},"ended":false},"keyshop":{"cards":[{"name":"[특별할인] 열쇠 상자 1개","boxes":1,"price_fc":1590,"period":"2026.10.29(목) ~ 11.26(목) 점검 전","avg_keys":2.57445,"p_reach_120":0.0001,"p_reach_800":0.0001,"per":{"none":{"ev":25927209.880462892,"per_fc":16306.421308467228,"key_value":27250303.60459346,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":27250303.60459346,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":22171837.949886877,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":21667425.7249755,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":19739866.19838694,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":17744078.396149117,"on_c":"C 그대로"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":7451647.455193058,"on_c":null}]},"top":{"ev":28583143.697857946,"per_fc":17976.819935759715,"key_value":30883677.418539256,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":30883677.418539256,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":25128083.0098718,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":24556415.821638897,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":22371848.35817186,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":19577455.51563567,"on_c":"C 그대로"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":8178533.782552131,"on_c":null}]},"pc":{"ev":29911110.60655547,"per_fc":18812.019249405956,"key_value":32700364.325512156,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":32700364.325512156,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":26606205.53986426,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":26000910.8699706,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":23687839.438064326,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":20525574.980782606,"on_c":"업그레이드"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":8541976.946231669,"on_c":null}]},"pc_top":{"ev":32567044.423950523,"per_fc":20482.41787669844,"key_value":36333738.139457956,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":36333738.139457956,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":29562450.599849176,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":28889900.966634,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":26319821.59784925,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":22806194.423091784,"on_c":"업그레이드"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":9268863.273590744,"on_c":null}]}}},{"name":"[특별할인] 열쇠 상자 2개 (계정 한도)","boxes":2,"price_fc":3180,"period":"2026.10.29(목) ~ 11.26(목) 점검 전","avg_keys":5.34715,"p_reach_120":0.0005,"p_reach_800":0.0005,"per":{"none":{"ev":57505464.86934973,"per_fc":18083.479518663436,"key_value":27250303.60459346,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":27250303.60459346,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":22171837.949886877,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":21667425.7249755,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":19739866.19838694,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":17744078.396149117,"on_c":"C 그대로"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":7451647.455193058,"on_c":null}]},"top":{"ev":63589116.01859636,"per_fc":19996.57736433848,"key_value":30883677.418539256,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":30883677.418539256,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":25128083.0098718,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":24556415.821638897,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":22371848.35817186,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":19577455.51563567,"on_c":"C 그대로"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":8178533.782552131,"on_c":null}]},"pc":{"ev":66630941.593219675,"per_fc":20953.126287175997,"key_value":32700364.325512156,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":32700364.325512156,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":26606205.53986426,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":26000910.8699706,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":23687839.438064326,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":20525574.980782606,"on_c":"업그레이드"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":8541976.946231669,"on_c":null}]},"pc_top":{"ev":72714592.74246632,"per_fc":22866.224132851043,"key_value":36333738.139457956,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":36333738.139457956,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":29562450.599849176,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":28889900.966634,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":26319821.59784925,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":22806194.423091784,"on_c":"업그레이드"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":9268863.273590744,"on_c":null}]}}},{"name":"열쇠 상자 1개","boxes":1,"price_fc":1750,"period":"2026.10.29(목) ~ 11.26(목) 점검 전","avg_keys":2.57445,"p_reach_120":0.0001,"p_reach_800":0.0001,"per":{"none":{"ev":25927209.880462892,"per_fc":14815.548503121652,"key_value":27250303.60459346,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":27250303.60459346,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":22171837.949886877,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":21667425.7249755,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":19739866.19838694,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":17744078.396149117,"on_c":"C 그대로"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":7451647.455193058,"on_c":null}]},"top":{"ev":28583143.697857946,"per_fc":16333.224970204541,"key_value":30883677.418539256,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":30883677.418539256,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":25128083.0098718,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":24556415.821638897,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":22371848.35817186,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":19577455.51563567,"on_c":"C 그대로"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":8178533.782552131,"on_c":null}]},"pc":{"ev":29911110.60655547,"per_fc":17092.063203745984,"key_value":32700364.325512156,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":32700364.325512156,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":26606205.53986426,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":26000910.8699706,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":23687839.438064326,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":20525574.980782606,"on_c":"업그레이드"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":8541976.946231669,"on_c":null}]},"pc_top":{"ev":32567044.423950523,"per_fc":18609.73967082887,"key_value":36333738.139457956,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":36333738.139457956,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":29562450.599849176,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":28889900.966634,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":26319821.59784925,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":22806194.423091784,"on_c":"업그레이드"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":9268863.273590744,"on_c":null}]}}},{"name":"열쇠 상자 X 4","boxes":4,"price_fc":7000,"period":"2026.10.29(목) ~ 11.26(목) 점검 전","avg_keys":10.734,"p_reach_120":0.001,"p_reach_800":0.001,"per":{"none":{"ev":116769096.11905423,"per_fc":16681.299445579174,"key_value":27250303.60459346,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":27250303.60459346,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":22171837.949886877,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":21667425.7249755,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":19739866.19838694,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":17744078.396149117,"on_c":"C 그대로"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":7451647.455193058,"on_c":null}]},"top":{"ev":130107795.76826145,"per_fc":18586.827966894492,"key_value":30883677.418539256,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":30883677.418539256,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":25128083.0098718,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":24556415.821638897,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":22371848.35817186,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":19577455.51563567,"on_c":"C 그대로"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":8178533.782552131,"on_c":null}]},"pc":{"ev":136777145.59286505,"per_fc":19539.59222755215,"key_value":32700364.325512156,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":32700364.325512156,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":26606205.53986426,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":26000910.8699706,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":23687839.438064326,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":20525574.980782606,"on_c":"업그레이드"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":8541976.946231669,"on_c":null}]},"pc_top":{"ev":150115845.2420723,"per_fc":21445.120748867474,"key_value":36333738.139457956,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":36333738.139457956,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":29562450.599849176,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":28889900.966634,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":26319821.59784925,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":22806194.423091784,"on_c":"업그레이드"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":9268863.273590744,"on_c":null}]}}},{"name":"[상시할인] 열쇠 상자 X 9","boxes":9,"price_fc":14900,"period":"2026.10.29(목) ~ 11.26(목) 점검 전","avg_keys":23.9995,"p_reach_120":0.0022,"p_reach_800":0.0022,"per":{"none":{"ev":312493220.1373421,"per_fc":20972.69933807665,"key_value":27250303.60459346,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":27250303.60459346,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":22171837.949886877,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":21667425.7249755,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":19739866.19838694,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":17744078.396149117,"on_c":"C 그대로"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":7451647.455193058,"on_c":null}]},"top":{"ev":348109670.98898774,"per_fc":23363.065167046156,"key_value":30883677.418539256,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":30883677.418539256,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":25128083.0098718,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":24556415.821638897,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":22371848.35817186,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":19577455.51563567,"on_c":"C 그대로"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":8178533.782552131,"on_c":null}]},"pc":{"ev":365917896.41481054,"per_fc":24558.24808153091,"key_value":32700364.325512156,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":32700364.325512156,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":26606205.53986426,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":26000910.8699706,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":23687839.438064326,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":20525574.980782606,"on_c":"업그레이드"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":8541976.946231669,"on_c":null}]},"pc_top":{"ev":401534347.26645625,"per_fc":26948.61391050042,"key_value":36333738.139457956,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":36333738.139457956,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":29562450.599849176,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":28889900.966634,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":26319821.59784925,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":22806194.423091784,"on_c":"업그레이드"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":9268863.273590744,"on_c":null}]}}},{"name":"X 9 묶음 2번 (18개)","boxes":18,"price_fc":29800,"period":"2026.10.29(목) ~ 11.26(목) 점검 전","avg_keys":55.82425,"p_reach_120":0.00655,"p_reach_800":0.00405,"per":{"none":{"ev":980299213.9283068,"per_fc":32895.94677611768,"key_value":27250303.60459346,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":27250303.60459346,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":22171837.949886877,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":21667425.7249755,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":19739866.19838694,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":17744078.396149117,"on_c":"C 그대로"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":7451647.455193058,"on_c":null}]},"top":{"ev":1098375583.4399004,"per_fc":36858.241055030216,"key_value":30883677.418539256,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":30883677.418539256,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":25128083.0098718,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":24556415.821638897,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":22371848.35817186,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":19577455.51563567,"on_c":"C 그대로"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":8178533.782552131,"on_c":null}]},"pc":{"ev":1157419802.09813,"per_fc":38839.59067443389,"key_value":32700364.325512156,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":32700364.325512156,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":26606205.53986426,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":26000910.8699706,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":23687839.438064326,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":20525574.980782606,"on_c":"업그레이드"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":8541976.946231669,"on_c":null}]},"pc_top":{"ev":1275511425.522425,"per_fc":42802.39682961158,"key_value":36333738.139457956,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":36333738.139457956,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":29562450.599849176,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":28889900.966634,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":26319821.59784925,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":22806194.423091784,"on_c":"업그레이드"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":9268863.273590744,"on_c":null}]}}},{"name":"X 9 묶음 4번 (36개)","boxes":36,"price_fc":59600,"period":"2026.10.29(목) ~ 11.26(목) 점검 전","avg_keys":110.731,"p_reach_120":0.2156,"p_reach_800":0.00755,"per":{"none":{"ev":2163276669.722164,"per_fc":36296.58841815712,"key_value":27250303.60459346,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":27250303.60459346,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":22171837.949886877,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":21667425.7249755,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":19739866.19838694,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":17744078.396149117,"on_c":"C 그대로"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":7451647.455193058,"on_c":null}]},"top":{"ev":2437768173.1483183,"per_fc":40902.15055617984,"key_value":30883677.418539256,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":30883677.418539256,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":25128083.0098718,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":24556415.821638897,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":22371848.35817186,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":19577455.51563567,"on_c":"C 그대로"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":8178533.782552131,"on_c":null}]},"pc":{"ev":2575355352.0621896,"per_fc":43210.66026949982,"key_value":32700364.325512156,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":32700364.325512156,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":26606205.53986426,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":26000910.8699706,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":23687839.438064326,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":20525574.980782606,"on_c":"업그레이드"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":8541976.946231669,"on_c":null}]},"pc_top":{"ev":2850590023.2385287,"per_fc":47828.69166507599,"key_value":36333738.139457956,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":36333738.139457956,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":29562450.599849176,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":28889900.966634,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":26319821.59784925,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":22806194.423091784,"on_c":"업그레이드"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":9268863.273590744,"on_c":null}]}}},{"name":"X 9 묶음 8번 (72개)","boxes":72,"price_fc":119200,"period":"2026.10.29(목) ~ 11.26(목) 점검 전","avg_keys":228.7368,"p_reach_120":1.0,"p_reach_800":0.0144,"per":{"none":{"ev":4747982826.984974,"per_fc":39832.070696182665,"key_value":27250303.60459346,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":27250303.60459346,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":22171837.949886877,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":21667425.7249755,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":19739866.19838694,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":17744078.396149117,"on_c":"C 그대로"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":7451647.455193058,"on_c":null}]},"top":{"ev":5366910664.093948,"per_fc":45024.41832293581,"key_value":30883677.418539256,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":30883677.418539256,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":25128083.0098718,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":24556415.821638897,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":22371848.35817186,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":19577455.51563567,"on_c":"C 그대로"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":8178533.782552131,"on_c":null}]},"pc":{"ev":5677060653.096511,"per_fc":47626.34776087677,"key_value":32700364.325512156,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":32700364.325512156,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":26606205.53986426,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":26000910.8699706,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":23687839.438064326,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":20525574.980782606,"on_c":"업그레이드"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":8541976.946231669,"on_c":null}]},"pc_top":{"ev":6298488072.916043,"per_fc":52839.66504124198,"key_value":36333738.139457956,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":36333738.139457956,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":29562450.599849176,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":28889900.966634,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":26319821.59784925,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":22806194.423091784,"on_c":"업그레이드"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":9268863.273590744,"on_c":null}]}}},{"name":"X 9 묶음 16번 (144개)","boxes":144,"price_fc":238400,"period":"2026.10.29(목) ~ 11.26(목) 점검 전","avg_keys":467.2822,"p_reach_120":1.0,"p_reach_800":0.02865,"per":{"none":{"ev":10174524286.407272,"per_fc":42678.37368459426,"key_value":27250303.60459346,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":27250303.60459346,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":22171837.949886877,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":21667425.7249755,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":19739866.19838694,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":17744078.396149117,"on_c":"C 그대로"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":7451647.455193058,"on_c":null}]},"top":{"ev":11453255210.289223,"per_fc":48042.17789550848,"key_value":30883677.418539256,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":30883677.418539256,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":25128083.0098718,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":24556415.821638897,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":22371848.35817186,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":19577455.51563567,"on_c":"C 그대로"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":8178533.782552131,"on_c":null}]},"pc":{"ev":12115912039.606112,"per_fc":50821.77868962295,"key_value":32700364.325512156,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":32700364.325512156,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":26606205.53986426,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":26000910.8699706,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":23687839.438064326,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":20525574.980782606,"on_c":"업그레이드"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":8541976.946231669,"on_c":null}]},"pc_top":{"ev":13449319801.101788,"per_fc":56414.932051601456,"key_value":36333738.139457956,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":36333738.139457956,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":29562450.599849176,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":28889900.966634,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":26319821.59784925,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":22806194.423091784,"on_c":"업그레이드"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":9268863.273590744,"on_c":null}]}}},{"name":"X 9 묶음 32번 (288개)","boxes":288,"price_fc":476800,"period":"2026.10.29(목) ~ 11.26(목) 점검 전","avg_keys":938.9331,"p_reach_120":1.0,"p_reach_800":0.90325,"per":{"none":{"ev":23633521768.3259,"per_fc":49566.95001746204,"key_value":27250303.60459346,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":27250303.60459346,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":22171837.949886877,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":21667425.7249755,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":19739866.19838694,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":17744078.396149117,"on_c":"C 그대로"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":7451647.455193058,"on_c":null}]},"top":{"ev":26768390159.29399,"per_fc":56141.757884425315,"key_value":30883677.418539256,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":30883677.418539256,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":25128083.0098718,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":24556415.821638897,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":22371848.35817186,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":19577455.51563567,"on_c":"C 그대로"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":8178533.782552131,"on_c":null}]},"pc":{"ev":28338619121.64245,"per_fc":59435.02332559238,"key_value":32700364.325512156,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":32700364.325512156,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":26606205.53986426,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":26000910.8699706,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":23687839.438064326,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":20525574.980782606,"on_c":"업그레이드"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":8541976.946231669,"on_c":null}]},"pc_top":{"ev":31480622719.27194,"per_fc":66024.79597162739,"key_value":36333738.139457956,"uses":[{"name":"[열쇠 800개] 프리미엄 더블드로우 상자","keys":800,"per_key":36333738.139457956,"on_c":null},{"name":"[열쇠 360개][선수팩 70%] 프리미엄 세컨드 찬스 드로우 상자","keys":360,"per_key":29562450.599849176,"on_c":"업그레이드"},{"name":"[열쇠 120개] 더블드로우 상자","keys":120,"per_key":28889900.966634,"on_c":null},{"name":"[열쇠 60개][선수팩 70%] 세컨드 찬스 드로우 상자","keys":60,"per_key":26319821.59784925,"on_c":"업그레이드"},{"name":"[열쇠 20개][선수팩 70%] 베이직 세컨드 찬스 드로우 상자","keys":20,"per_key":22806194.423091784,"on_c":"업그레이드"},{"name":"[열쇠 1개] 선수팩 or BP 상자","keys":1,"per_key":9268863.273590744,"on_c":null}]}}}],"keys_per_box":3.2864620498614956,"keys_per_box_base":2.6348,"copier_gain":0.1835,"ended":false}}};/*DATA-END*/
+</script>
+<script>
+(function () {
+  var KEY = "fc-eff-discount";
+  // 일부 환경(파일 미리보기, 사생활 보호 모드)은 저장소 접근을 막으므로 실패해도 계속 진행
+  function load() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
+  function save(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
+  var discount = parseFloat(load() || "0");
+  if (!(discount in { 0: 1, 0.2: 1, 0.3: 1, 0.5: 1 })) discount = 0;
+  var data = null;
+
+  var fmt = function (n) { return Math.round(n).toLocaleString("ko-KR"); };
+  function bpText(n) {
+    // 1억 이상은 '억', 그 아래는 '만' 단위로 짧게
+    if (Math.abs(n) >= 1e8) return (n / 1e8).toLocaleString("ko-KR", { maximumFractionDigits: 2 }) + "억";
+    if (Math.abs(n) >= 1e4) return (n / 1e4).toLocaleString("ko-KR", { maximumFractionDigits: 1 }) + "만";
+    return fmt(n);
+  }
+  function pctText(p) {
+    var v = p * 100;
+    return (v >= 1 ? v.toFixed(2) : v >= 0.01 ? v.toFixed(4) : v.toPrecision(2)) + "%";
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  var DKEY = { 0: "none", 0.2: "top", 0.3: "pc", 0.5: "pc_top" };
+  // 최저~최고 차이가 수백 배라 일반 눈금이면 기대값이 왼쪽 끝에 붙어 버린다 → 로그 눈금 사용
+  function logPos(v, lo, hi) {
+    var a = Math.log(Math.max(lo, 1)), b = Math.log(Math.max(hi, 1)), x = Math.log(Math.max(v, 1));
+    if (b <= a) return 50;
+    return Math.max(0, Math.min(100, (x - a) / (b - a) * 100));
+  }
+  function rangeHtml(r, ev) {
+    if (!r) return "";
+    var pos = logPos(ev, r[0], r[1]);
+    var align = pos < 15 ? "left" : pos > 85 ? "right" : "center";
+    return '<div class="range">' +
+      '<span class="lbl">상품 1개를 깠을 때 (눈금은 로그 배율)</span>' +
+      '<span class="lo">최저 <b>' + bpText(r[0]) + '</b></span>' +
+      '<span class="track" role="img" aria-label="최저 ' + bpText(r[0]) + ', 기대값 ' + bpText(ev) + ', 최고 ' + bpText(r[1]) + ' BP">' +
+        '<span class="fill" style="width:' + pos + '%"></span>' +
+        '<span class="ev-dot" style="left:' + pos + '%" title="기대값 ' + bpText(ev) + ' BP"></span>' +
+        '<span class="ev-lbl ' + align + '" style="left:' + pos + '%">기대값 <b>' + bpText(ev) + '</b></span>' +
+      '</span>' +
+      '<span class="hi">최고 <b>' + bpText(r[1]) + '</b> BP</span>' +
+      '</div>';
+  }
+  function netOne(r, d) { return r.bp + r.player * (1 - 0.4 * (1 - d)); }
+  function productEV(p, d) {
+    return p.rows.reduce(function (s, r) { return s + r.w * netOne(r, d); }, 0);
+  }
+
+  // ---------- 탭 ----------
+  var TAB_KEY = "fc-eff-tab";
+  var tab = (location.hash || "").replace("#", "");
+  if (!/^(web|fishbread|keyshop|rec)$/.test(tab)) {
+    try { tab = localStorage.getItem(TAB_KEY) || "web"; } catch (e) { tab = "web"; }
+  }
+  function render() {
+    document.querySelectorAll("#tabs button").forEach(function (b) {
+      b.setAttribute("aria-selected", b.dataset.tab === tab ? "true" : "false");
+    });
+    if (tab === "fishbread") return renderFish();
+    if (tab === "keyshop") return renderKey();
+    if (tab === "rec") return renderRec();
+    document.getElementById("tabnote").innerHTML = "";
+    return renderWeb();
+  }
+
+  // 이벤트 탭 공통 카드: 효율 순위는 따로, 목록은 가격 높은 순
+  function eventCards(cards, d, extraTop, details) {
+    var dk = DKEY[d];
+    var items = cards.map(function (c) { return { c: c, x: c.per[dk] }; });
+    items.slice().sort(function (a, b) { return b.x.per_fc - a.x.per_fc; })
+      .forEach(function (it, i) { it.effRank = i + 1; });
+    items.sort(function (a, b) { return (b.c.price_fc - a.c.price_fc) || a.c.name.localeCompare(b.c.name, "ko"); });
+    return items.map(function (it) {
+      var c = it.c, x = it.x;
+      return '<li class="card"><div class="card-top">' +
+        '<div class="rank" title="1 FC당 BP 기준 효율 순위"><small>효율</small>' + it.effRank + '<small>위</small></div>' +
+        '<div><div class="name">' + esc(c.name) + '</div>' +
+          '<div class="sub">' + fmt(c.price_fc) + ' FC · ' + esc(c.period) + '</div>' + extraTop(c, x) + '</div>' +
+        '<div class="hero"><div class="unit">상품 1개 기대</div>' +
+          '<div class="num">' + bpText(x.ev) + ' <span class="num-unit">BP</span></div>' +
+          '<div class="per-fc">1 FC당 <b>' + fmt(x.per_fc) + '</b> BP</div></div>' +
+        '</div>' + details(c, x) + '</li>';
+    }).join("");
+  }
+
+  function renderFish() {
+    var T = data.tabs && data.tabs.fishbread;
+    var note = document.getElementById("tabnote");
+    if (!T) { note.innerHTML = "붕어빵 속 SSS 계산 결과가 아직 없어요."; document.getElementById("list").innerHTML = ""; return; }
+    if (T.ended) { note.innerHTML = "<b>붕어빵 속 SSS 이벤트가 끝났어요.</b> 다음 이벤트가 열리면 다시 계산할게요."; document.getElementById("list").innerHTML = ""; return; }
+    var x0 = T.cards[0].per[DKEY[discount]];
+    note.innerHTML =
+      '<b>참여권 1장 = 49칸 판에서 1칸 뽑기.</b> 뽑은 칸은 빠지고, 판 리셋은 언제든 공짜예요. ' +
+      '숫자는 <b>가장 이득인 리셋 전략</b> 기준이에요(괄호 안은 리셋 없이 끝까지 뽑는 경우). ' +
+      '보상은 아이템과 프리미엄 코인 중 더 이득인 쪽을 받는다고 계산했어요(코인 1개 ≈ ' + bpText(x0.coin_value) + ' BP). ' +
+      '스페셜 게임은 7번 참여마다 S등급 보상 1개가 더 나와요.';
+    document.getElementById("list").innerHTML = eventCards(T.cards, discount,
+      function (c, x) {
+        return '<div class="alt">리셋 없이 끝까지 뽑으면 1 FC당 ' + fmt(x.per_fc_alt) + ' BP</div>' +
+          '<div class="chips"><span class="chip">' + esc(c.group) + '</span><span class="chip">참여권 ' + c.count + '장</span>' +
+          '<span class="chip">1장당 ' + bpText(x.per_ticket) + ' BP</span></div>';
+      },
+      function (c, x) {
+        var body = x.grades.map(function (g) {
+          return '<tr><td>' + g.grade + '</td><td>' + g.cells + '칸</td><td>' + esc(g.choice) + '</td><td>' + bpText(g.value) + '</td></tr>';
+        }).join("");
+        var strat = '처음 판에서 S 이상이 나오면 바로 리셋하고, A·B가 나오면 계속 뽑는 것이 기본이에요. 평균 ' +
+          x.draws_per_board.toFixed(1) + '번 뽑고 리셋하게 돼요.';
+        return '<details><summary>등급별 가치·전략 보기</summary><div class="tbl-wrap"><table>' +
+          '<thead><tr><th>등급</th><th>칸 수</th><th>받는 방법(더 이득인 쪽)</th><th>실수령 기대</th></tr></thead>' +
+          '<tbody>' + body + '</tbody></table></div>' +
+          '<p class="alt" style="margin-top:8px">' + strat + (x.lucky7 ? ' 럭키 7 보너스는 1장당 ' + bpText(x.lucky7) + ' BP예요.' : '') + '</p></details>';
+      });
+  }
+
+  function renderKey() {
+    var T = data.tabs && data.tabs.keyshop;
+    var note = document.getElementById("tabnote");
+    if (!T) { note.innerHTML = "열쇠 상점 계산 결과가 아직 없어요."; document.getElementById("list").innerHTML = ""; return; }
+    if (T.ended) { note.innerHTML = "<b>26UP 프리미엄 열쇠 상점이 끝났어요.</b> 다음 이벤트가 열리면 다시 계산할게요."; document.getElementById("list").innerHTML = ""; return; }
+    note.innerHTML =
+      '<b>열쇠는 많이 모아 큰 상자에 쓸수록 1개당 가치가 커져요.</b> 그래서 구매량별로 따로 계산했어요. ' +
+      '상자 1개당 열쇠는 평균 ' + T.keys_per_box_base.toFixed(2) + '개(스페셜 부스트 포함 장기 평균 ' + T.keys_per_box.toFixed(2) + '개)이고, ' +
+      '처음 사는 사람 기준으로 상자 여는 과정을 2만 번 흉내 내서, 모인 열쇠로 가장 이득인 교환 조합을 골랐어요. ' +
+      '열쇠 복사기(평균 +' + (T.copier_gain * 100).toFixed(0) + '%)와 세컨드 찬스 업그레이드도 포함, 치얼업(2회 한정)은 제외했어요.';
+    document.getElementById("list").innerHTML = eventCards(T.cards, discount,
+      function (c, x) {
+        return '<div class="chips"><span class="chip">상자 ' + c.boxes + '개</span>' +
+          '<span class="chip">평균 열쇠 ' + Math.round(c.avg_keys) + '개</span>' +
+          '<span class="chip">120개 도달 ' + Math.round(c.p_reach_120 * 100) + '%</span>' +
+          '<span class="chip">800개 도달 ' + Math.round(c.p_reach_800 * 100) + '%</span></div>';
+      },
+      function (c, x) {
+        var body = x.uses.map(function (u) {
+          return '<tr><td>' + esc(u.name) + '</td><td>' + fmt(u.keys) + '개</td><td>' + bpText(u.per_key) + '</td><td>' +
+            (u.on_c ? 'C 나오면 ' + esc(u.on_c) : '') + '</td></tr>';
+        }).join("");
+        return '<details><summary>열쇠 사용처별 가치 보기</summary><div class="tbl-wrap"><table>' +
+          '<thead><tr><th>열쇠 교환</th><th>필요 열쇠</th><th>열쇠 1개당 가치</th><th>비고</th></tr></thead>' +
+          '<tbody>' + body + '</tbody></table></div>' +
+          '<p class="alt" style="margin-top:8px">열쇠가 충분하면(800개 이상) 열쇠 1개 ≈ ' + bpText(x.key_value) + ' BP예요.</p></details>';
+      });
+  }
+
+  // ---------- 예산별 추천 ----------
+  var BUDGET_KEY = "fc-eff-budget";
+  var budget = 30000;
+  try { budget = parseInt(localStorage.getItem(BUDGET_KEY), 10) || 30000; } catch (e) {}
+  var TAB_LABEL = { web: "웹 상점", fishbread: "붕어빵 속 SSS", keyshop: "열쇠 상점" };
+
+  // 세 탭의 모든 상품을 같은 모양으로 모은다
+  function allItems(d) {
+    var dk = DKEY[d], out = [];
+    data.products.forEach(function (p) {
+      if (p.status === "waiting") return;
+      var ev = productEV(p, d), evNone = productEV(p, 0), evBest = productEV(p, 0.5);
+      var bpPart = p.rows.reduce(function (s, r) { return s + r.w * r.bp; }, 0);
+      out.push({ tab: "web", name: p.name, price: p.price_fc, ev: ev, perFc: ev / p.price_fc,
+        limit: p.limit || null, limitText: p.limit_text || "", period: p.period,
+        bpShare: ev > 0 ? bpPart / ev : 0, feeGain: evNone > 0 ? evBest / evNone - 1 : 0,
+        bonus: p.components.length > 1, range: p.range ? p.range[dk] : null, isBpCard: /^BP 카드/.test(p.name) });
+    });
+    var F = data.tabs && data.tabs.fishbread;
+    if (F && !F.ended) F.cards.forEach(function (c) {
+      var x = c.per[dk];
+      out.push({ tab: "fishbread", name: c.name, price: c.price_fc, ev: x.ev, perFc: x.per_fc,
+        altPerFc: x.per_fc_alt, draws: x.draws_per_board, group: c.group, period: c.period,
+        limit: /특별할인/.test(c.name) ? 10 : null, limitText: /특별할인/.test(c.name) ? "10회 구매 제한" : "" });
+    });
+    var K = data.tabs && data.tabs.keyshop;
+    if (K && !K.ended) K.cards.forEach(function (c) {
+      var x = c.per[dk];
+      out.push({ tab: "keyshop", name: c.name, price: c.price_fc, ev: x.ev, perFc: x.per_fc, period: c.period,
+        avgKeys: c.avg_keys, reach800: c.p_reach_800, reach120: c.p_reach_120, boxes: c.boxes,
+        limit: 1, exclusive: "keyshop", limitText: /특별할인/.test(c.name) ? "계정 2회 한정" : "" });
+    });
+    return out;
+  }
+
+  // 예산 안에서 '기대 BP 합계'가 가장 큰 조합을 찾는다 (가능한 조합을 모두 따지는 계산).
+  // 구매 제한을 지키고, 열쇠 상점은 구매 방법 하나만 고른다. 단위는 10 FC.
+  var DP_CAP = 300000;
+  function knapsack(items, B) {
+    var U = 10, C = Math.floor(B / U), pieces = [];
+    items.forEach(function (it, idx) {
+      var w = Math.round(it.price / U);
+      if (w <= 0 || w > C) return;
+      if (!it.limit) { pieces.push({ idx: idx, w: w, v: it.ev, k: 1, unb: true }); return; }
+      var left = it.limit, k = 1;          // 구매 제한이 있으면 1,2,4,…개 묶음으로 나눠 계산
+      while (left > 0) {
+        var t = Math.min(k, left);
+        pieces.push({ idx: idx, w: w * t, v: it.ev * t, k: t, unb: false });
+        left -= t; k *= 2;
+      }
+    });
+    var dp = new Float64Array(C + 1), take = pieces.map(function () { return new Uint8Array(C + 1); });
+    pieces.forEach(function (p, i) {
+      if (p.unb) {
+        for (var c = p.w; c <= C; c++) if (dp[c - p.w] + p.v > dp[c]) { dp[c] = dp[c - p.w] + p.v; take[i][c] = 1; }
+      } else {
+        for (var c2 = C; c2 >= p.w; c2--) if (dp[c2 - p.w] + p.v > dp[c2]) { dp[c2] = dp[c2 - p.w] + p.v; take[i][c2] = 1; }
+      }
+    });
+    var count = {}, c3 = C;
+    for (var i = pieces.length - 1; i >= 0; i--) {
+      var p = pieces[i];
+      if (p.unb) { while (c3 >= p.w && take[i][c3]) { count[p.idx] = (count[p.idx] || 0) + 1; c3 -= p.w; } }
+      else if (take[i][c3]) { count[p.idx] = (count[p.idx] || 0) + p.k; c3 -= p.w; }
+    }
+    return { value: dp[C], count: count };
+  }
+
+  function bestCombo(items, B) {
+    var normal = items.filter(function (it) { return !it.exclusive; });
+    var plans = [null].concat(items.filter(function (it) { return it.exclusive && it.price <= B; }));
+    var unl = normal.filter(function (it) { return !it.limit; }).sort(function (a, b) { return b.perFc - a.perFc; })[0];
+    var best = null;
+    plans.forEach(function (plan) {
+      var R = B - (plan ? plan.price : 0), pre = 0;
+      // 예산이 아주 크면 가장 효율 좋은 무제한 상품을 먼저 채우고 나머지만 정밀 계산
+      if (unl && R > DP_CAP) { pre = Math.ceil((R - DP_CAP) / unl.price); R -= pre * unl.price; }
+      var ks = knapsack(normal, R);
+      var total = ks.value + pre * (unl ? unl.ev : 0) + (plan ? plan.ev : 0);
+      if (!best || total > best.total) best = { total: total, ks: ks, pre: pre, plan: plan };
+    });
+    var picks = [];
+    if (best.plan) picks.push({ it: best.plan, n: 1 });
+    var cnt = best.ks.count;
+    if (best.pre) { var ui = normal.indexOf(unl); cnt[ui] = (cnt[ui] || 0) + best.pre; }
+    Object.keys(cnt).forEach(function (k) { picks.push({ it: normal[k], n: cnt[k] }); });
+    picks.sort(function (a, b) { return b.it.perFc - a.it.perFc; });
+    var spent = picks.reduce(function (s, p) { return s + p.n * p.it.price; }, 0);
+    return { picks: picks, left: B - spent };
+  }
+
+  function bestComboGreedy(items, B) {
+    var left = B, picks = [], used = {};
+    items.filter(function (it) { return it.price <= B; })
+      .sort(function (a, b) { return b.perFc - a.perFc; })
+      .forEach(function (it) {
+        if (it.exclusive && used[it.exclusive]) return;
+        var n = Math.floor(left / it.price);
+        if (it.limit) n = Math.min(n, it.limit);
+        if (n <= 0) return;
+        if (it.exclusive) { used[it.exclusive] = true; n = 1; }
+        picks.push({ it: it, n: n });
+        left -= n * it.price;
+      });
+    return { picks: picks, left: left };
+  }
+
+  function reasons(it, rank, n, B, best) {
+    var r = [];
+    if (it.price > B) {
+      r.push('예산보다 <b>' + fmt(it.price - B) + ' FC</b> 비싸서 지금은 살 수 없어요.');
+    } else if (rank === 1) {
+      r.push('예산 안에서 <b>1 FC당 BP가 가장 높아요.</b>');
+    } else {
+      r.push('예산 안 ' + n + '개 중 ' + rank + '위예요. 1위보다 1 FC당 ' + fmt(best - it.perFc) + ' BP 적어요 (' +
+        Math.round((1 - it.perFc / best) * 100) + '% 낮음).');
+    }
+    if (it.tab === "web") {
+      if (it.isBpCard) r.push('BP를 그대로 사는 기준점이에요. 다른 상품이 이것보다 몇 배 좋은지 비교할 때 쓰세요.');
+      else if (it.bpShare >= 0.6) r.push('기대 BP의 ' + Math.round(it.bpShare * 100) + '%가 BP 카드라서 <b>결과가 비교적 안정적</b>이에요.');
+      else if (it.bpShare <= 0.4) r.push('기대 BP의 ' + Math.round((1 - it.bpShare) * 100) + '%가 선수에서 나와서 <b>운에 따른 차이가 커요.</b>');
+      if (it.feeGain > 0.15) r.push('선수 비중이 커서 PC방+TOP CLASS로 팔면 효율이 ' + Math.round(it.feeGain * 100) + '% 올라가요.');
+      if (it.bonus) r.push('보너스 선수팩이 함께 들어 있어요.');
+      if (it.range && !it.isBpCard) r.push('1개를 깠을 때 최저 ' + bpText(it.range[0]) + ' ~ 최고 ' + bpText(it.range[1]) + ' BP예요.');
+    } else if (it.tab === "fishbread") {
+      r.push('이 숫자는 <b>리셋 전략</b>을 지켰을 때예요(S 이상이 나오면 바로 리셋, 평균 ' + it.draws.toFixed(0) +
+        '번 뽑고 리셋). 리셋 없이 끝까지 뽑으면 1 FC당 ' + fmt(it.altPerFc) + ' BP예요.');
+      if (/일반/.test(it.group)) r.push('일반 게임은 코인 교환과 럭키 7 보너스가 없어요.');
+      else r.push('스페셜 게임은 7번 참여마다 S등급 보상이 하나 더 나와요.');
+    } else if (it.tab === "keyshop") {
+      r.push('열쇠가 평균 ' + Math.round(it.avgKeys) + '개 모여요. 800개 상자를 열 확률 ' + Math.round(it.reach800 * 100) +
+        '%, 120개 상자 ' + Math.round(it.reach120 * 100) + '%.');
+      if (it.reach120 < 0.5) r.push('<b>적게 사면 효율이 크게 떨어져요.</b> 열쇠를 큰 상자에 쓰지 못하기 때문이에요.');
+      else if (it.reach800 >= 0.5) r.push('800개 프리미엄 더블 드로우까지 노릴 수 있는 구매량이에요.');
+    }
+    if (it.limitText) r.push('구매 제한: ' + esc(it.limitText.replace(/^구매\s*제한\s*/, '')) + '.');
+    return r;
+  }
+
+  function renderRec() {
+    var d = discount, items = allItems(d), B = budget;
+    var note = document.getElementById("tabnote");
+    note.innerHTML =
+      '<b>쓸 FC를 입력하면</b> 세 상점의 모든 상품을 1 FC당 BP 순서로 줄 세우고, 예산 안에서 가장 이득인 조합을 추천해요. ' +
+      '예산보다 비싼 상품은 흐리게 맨 아래에 있어요.' +
+      '<div class="budget"><input id="budget" type="number" inputmode="numeric" min="0" step="100" value="' + B + '" aria-label="쓸 FC">' +
+      '<span>FC</span>' +
+      [5000, 10000, 30000, 100000, 500000].map(function (v) {
+        return '<button class="quick" data-v="' + v + '">' + (v >= 10000 ? (v / 10000) + '만' : fmt(v)) + '</button>';
+      }).join("") + '</div>';
+    var input = document.getElementById("budget");
+    input.addEventListener("change", function () { setBudget(parseInt(input.value, 10) || 0); });
+    input.addEventListener("keydown", function (e) { if (e.key === "Enter") setBudget(parseInt(input.value, 10) || 0); });
+    note.querySelectorAll(".quick").forEach(function (b) {
+      b.addEventListener("click", function () { setBudget(parseInt(b.dataset.v, 10)); });
+    });
+
+    var ok = items.filter(function (it) { return it.price <= B; }).sort(function (a, b) { return b.perFc - a.perFc; });
+    var no = items.filter(function (it) { return it.price > B; }).sort(function (a, b) { return b.perFc - a.perFc; });
+    var best = ok.length ? ok[0].perFc : 0;
+
+    var html = "";
+    if (ok.length) {
+      var c = bestCombo(items, B);
+      var spent = B - c.left, total = c.picks.reduce(function (s, p) { return s + p.n * p.it.ev; }, 0);
+      html += '<li class="card combo"><h3>' + fmt(B) + ' FC 추천 조합</h3><div class="tbl-wrap"><table>' +
+        '<thead><tr><th>상품</th><th>개수</th><th>FC</th><th>기대 BP</th><th>1 FC당</th></tr></thead><tbody>' +
+        c.picks.map(function (p) {
+          return '<tr><td>' + esc(p.it.name) + '<span class="from">' + TAB_LABEL[p.it.tab] + '</span></td><td>' + p.n +
+            '</td><td>' + fmt(p.n * p.it.price) + '</td><td>' + bpText(p.n * p.it.ev) + '</td><td>' + fmt(p.it.perFc) + '</td></tr>';
+        }).join("") + '</tbody></table></div>' +
+        '<div class="sum"><span>쓰는 FC <b>' + fmt(spent) + '</b></span><span>기대 BP <b>' + bpText(total) + '</b></span>' +
+        '<span>평균 1 FC당 <b>' + fmt(spent ? total / spent : 0) + '</b></span>' +
+        (c.left ? '<span>남는 FC ' + fmt(c.left) + '</span>' : '') + '</div>' +
+        '<p class="alt" style="margin-top:8px">예산 안에서 살 수 있는 조합을 모두 따져, 기대 BP 합계가 가장 큰 조합을 골랐어요. ' +
+        '구매 제한을 지키고, 열쇠 상점은 구매 방법 하나만 골라요.</p></li>';
+    } else {
+      html += '<li class="card combo"><h3>예산 안에서 살 수 있는 상품이 없어요.</h3></li>';
+    }
+    html += ok.concat(no).map(function (it, i) {
+      var rank = it.price <= B ? i + 1 : null;
+      var why = reasons(it, rank, ok.length, B, best);
+      return '<li class="card rec-item' + (it.price > B ? ' dim' : '') + '"><div class="card-top">' +
+        '<div class="rank">' + (rank ? '<small>추천</small>' + rank + '<small>위</small>' : '–') + '</div>' +
+        '<div><div class="name">' + esc(it.name) + '</div>' +
+          '<div class="sub">' + fmt(it.price) + ' FC' + (it.price > B ? ' <span class="over">예산 초과</span>' : '') + '</div>' +
+          '<div class="chips"><span class="chip tab-' + it.tab + '">' + TAB_LABEL[it.tab] + '</span></div></div>' +
+        '<div class="hero"><div class="unit">상품 1개 기대</div>' +
+          '<div class="num" style="font-size:30px">' + bpText(it.ev) + ' <span class="num-unit">BP</span></div>' +
+          '<div class="per-fc">1 FC당 <b>' + fmt(it.perFc) + '</b> BP</div></div>' +
+        '</div><ul class="why">' + why.map(function (w) { return '<li>' + w + '</li>'; }).join("") + '</ul></li>';
+    }).join("");
+    document.getElementById("list").innerHTML = html;
+  }
+
+  function setBudget(v) {
+    budget = Math.max(0, v);
+    try { localStorage.setItem(BUDGET_KEY, String(budget)); } catch (e) {}
+    render();
+    var el = document.getElementById("budget");
+    if (el) el.focus();
+  }
+
+  function renderWeb() {
+    var d = discount;
+    var items = data.products.map(function (p) {
+      var ok = p.status !== "waiting";
+      var ev = ok ? productEV(p, d) : 0;
+      return { p: p, ok: ok, ev: ev, perFc: ok ? ev / p.price_fc : -1 };
+    });
+    // 효율 순위(1 FC당 BP)는 따로 매겨 두고, 목록 순서는 할인과 상관없이 항상 가격 높은 순
+    items.slice().sort(function (a, b) { return b.perFc - a.perFc; })
+      .forEach(function (it, i) { it.effRank = it.ok ? i + 1 : null; });
+    items.sort(function (a, b) {
+      return (b.p.price_fc - a.p.price_fc) || a.p.name.localeCompare(b.p.name, "ko");
+    });
+
+    var html = items.map(function (it) {
+      var p = it.p;
+      var top =
+        '<div class="card-top">' +
+          '<div class="rank" title="1 FC당 BP 기준 효율 순위">' +
+            (it.effRank ? '<small>효율</small>' + it.effRank + '<small>위</small>' : '–') + '</div>' +
+          '<div><div class="name">' + esc(p.name) + '</div>' +
+            '<div class="sub">' + fmt(p.price_fc) + ' FC' + (p.period ? ' · ' + esc(p.period) : '') + '</div>' +
+            (it.ok ? '' : '<span class="waiting">확률표 대기 중</span>') +
+          '</div>' +
+          (it.ok
+            ? '<div class="hero"><div class="unit">상품 1개 기대</div>' +
+              '<div class="num">' + bpText(it.ev) + ' <span class="num-unit">BP</span></div>' +
+              '<div class="per-fc">1 FC당 <b>' + fmt(it.perFc) + '</b> BP</div></div>'
+            : '<div class="hero"><div class="unit">새 상품이라 확률표를 준비 중이에요</div></div>') +
+        '</div>' +
+        (it.ok && p.range ? rangeHtml(p.range[DKEY[d]], it.ev) : '');
+      if (!it.ok) return '<li class="card">' + top + '</li>';
+
+      var rows = p.rows.map(function (r) {
+        var one = netOne(r, d);
+        var contrib = r.w * one;
+        return { r: r, one: one, contrib: contrib, share: it.ev > 0 ? contrib / it.ev : 0 };
+      }).sort(function (a, b) { return b.contrib - a.contrib; });
+
+      var body = rows.map(function (x) {
+        var r = x.r;
+        var sharePct = (x.share * 100).toFixed(1) + "%";
+        return '<tr>' +
+          '<td>' + esc(r.name) + (r.from ? '<span class="from">' + esc(r.from) + ' 안</span>' : '') + '</td>' +
+          '<td>' + pctText(r.prob) + '</td>' +
+          '<td>' + fmt(r.amount) + '</td>' +
+          '<td>' + bpText(x.one) + '</td>' +
+          '<td>' + bpText(x.contrib) + '</td>' +
+          '<td>' + fmt(x.contrib / p.price_fc) + '</td>' +
+          '<td><div class="share" title="' + esc(r.name) + ': 전체 기대 BP의 ' + sharePct + '">' +
+            '<span>' + sharePct + '</span><span class="bar"><i style="width:' + Math.max(0, Math.min(100, x.share * 100)) + '%"></i></span>' +
+          '</div></td>' +
+        '</tr>';
+      }).join("");
+
+      return '<li class="card">' + top +
+        '<details><summary>구성별 기여 보기</summary><div class="tbl-wrap"><table>' +
+          '<thead><tr><th>보상</th><th>확률</th><th>개수</th><th>1개 실수령 기대</th><th>상품 기대 BP 기여</th><th>1 FC당 기여</th><th>비중</th></tr></thead>' +
+          '<tbody>' + body + '</tbody>' +
+          '<tfoot><tr><td>합계</td><td></td><td></td><td></td><td>' + bpText(it.ev) + '</td><td>' + fmt(it.perFc) + '</td><td>100%</td></tr></tfoot>' +
+        '</table></div></details></li>';
+    }).join("");
+    document.getElementById("list").innerHTML = html;
+  }
+
+  function setDiscount(d) {
+    discount = d;
+    save(String(d));
+    document.querySelectorAll("#seg button").forEach(function (b) {
+      b.setAttribute("aria-pressed", parseFloat(b.dataset.d) === d ? "true" : "false");
+    });
+    var open = {};
+    document.querySelectorAll("#list details").forEach(function (el, i) {
+      if (el.open) open[el.closest("li").querySelector(".name").textContent] = true;
+    });
+    render();
+    document.querySelectorAll("#list li").forEach(function (li) {
+      var n = li.querySelector(".name"), det = li.querySelector("details");
+      if (n && det && open[n.textContent]) det.open = true;
+    });
+  }
+
+  document.querySelectorAll("#seg button").forEach(function (b) {
+    b.addEventListener("click", function () { setDiscount(parseFloat(b.dataset.d)); });
+  });
+  document.querySelectorAll("#tabs button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      tab = b.dataset.tab;
+      try { localStorage.setItem(TAB_KEY, tab); } catch (e) {}
+      try { history.replaceState(null, "", "#" + tab); } catch (e) {}
+      render();
+    });
+  });
+
+  // 계산 프로그램이 이 파일 안(DATA-START~END)에 데이터를 직접 넣는다 → 파일만 열어도 동작
+  var j = window.FC_DATA;
+  if (!j || !j.products) {
+    document.getElementById("list").innerHTML = '<li class="err">데이터를 불러오지 못했어요. 잠시 후 새로고침해 주세요.</li>';
+    document.getElementById("meta").textContent = "";
+    return;
+  }
+  data = j;
+  var t = new Date(j.updated_at);
+  document.getElementById("meta").textContent =
+    "시세 기준: " + t.toLocaleString("ko-KR", { timeZone: "Asia/Seoul", dateStyle: "long", timeStyle: "short" }) +
+    " · 확률표 확인: " + (j.probability_fetched || "-");
+  setDiscount(discount);
+})();
+</script>
+</body>
+</html>

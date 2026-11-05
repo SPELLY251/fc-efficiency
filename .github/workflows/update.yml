@@ -1,0 +1,65 @@
+# 매일 한국 시간 01:05 에 시세를 새로 받아 계산하고 사이트를 다시 올린다.
+# (GitHub 서버가 붐비면 몇 분~수십 분 늦게 시작될 수 있음)
+name: 매일 갱신
+
+on:
+  schedule:
+    - cron: "5 16 * * *"   # UTC 16:05 = 한국 01:05
+  workflow_dispatch:        # GitHub 화면에서 수동 실행 버튼
+  workflow_call:            # 목요일 점검 감시에서 호출
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  issues: write
+
+concurrency:
+  group: site-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 준비
+        run: pip install -r requirements.txt
+
+      - name: 시세 받기 + 계산 + 사이트 만들기
+        id: calc
+        continue-on-error: true
+        run: python scraper/update_all.py
+
+      - name: 결과 저장(커밋)
+        run: |
+          git config user.name "fc-efficiency-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add site output/*.json data
+          git diff --cached --quiet || git commit -m "자동 갱신 $(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M')"
+          git push
+
+      - name: 새 확률표가 필요하면 알림(이슈 → 이메일)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scraper/notify_missing.py
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: update
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
