@@ -1,2 +1,3 @@
 User-agent: *
 Allow: /
+Sitemap: https://spelly251.github.io/fc-efficiency/sitemap.xml

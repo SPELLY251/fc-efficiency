@@ -1,7 +1,7 @@
 {
   "_설명": "공개 설정. 값이 비어 있으면 해당 기능은 꺼진 상태로 사이트를 만든다.",
-  "site_url": "",
-  "contact_url": "",
+  "site_url": "https://spelly251.github.io/fc-efficiency",
+  "contact_url": "https://github.com/SPELLY251/fc-efficiency/issues",
   "google_site_verification": "",
   "naver_site_verification": "",
   "ga_measurement_id": "",
